@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -21,14 +23,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal" >
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Coffees!"
+                android:text="Browse Drinks"
                 android:textSize="30sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Profile Button"
+                android:src="@drawable/round_account_circle_48" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/searchbar_bg" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/outline_data_loss_prevention_36"
+                android:layout_marginRight="8dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Search for coffee..."
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -48,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:background="@drawable/rounded_bg"
+                    android:background="@drawable/rounded_bg_black"
                     android:text="Expresso-based"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -58,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:background="@drawable/rounded_bg"
+                    android:background="@drawable/rounded_bg_black"
                     android:text="Signatures"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -68,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:background="@drawable/rounded_bg"
+                    android:background="@drawable/rounded_bg_black"
                     android:text="Cold Brew"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -78,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:background="@drawable/rounded_bg"
+                    android:background="@drawable/rounded_bg_black"
                     android:text="Pistachio"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -88,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:background="@drawable/rounded_bg"
+                    android:background="@drawable/rounded_bg_black"
                     android:text="Milk-based"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
