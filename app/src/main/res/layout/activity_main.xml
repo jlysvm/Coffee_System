@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
     android:paddingVertical="6dp"
+    android:background="#E0E0E0"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -51,7 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp"
             android:background="@drawable/searchbar_bg" >
@@ -65,7 +66,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Search for coffee..."
+                android:hint="Search for drinks..."
                 android:inputType="text" />
 
         </LinearLayout>
