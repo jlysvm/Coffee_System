@@ -82,13 +82,14 @@
                 android:showDividers="middle"
                 android:divider="@drawable/empty_space" >
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
                     android:background="@drawable/rounded_bg_black"
-                    android:text="Expresso-based"
+                    android:text="Signatures"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -98,7 +99,7 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
                     android:background="@drawable/rounded_bg_black"
-                    android:text="Signatures"
+                    android:text="Espresso-based"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -118,7 +119,7 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
                     android:background="@drawable/rounded_bg_black"
-                    android:text="Pistachio"
+                    android:text="Milk-based"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -128,7 +129,17 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
                     android:background="@drawable/rounded_bg_black"
-                    android:text="Milk-based"
+                    android:text="Matcha"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/rounded_bg_black"
+                    android:text="Frappes"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
