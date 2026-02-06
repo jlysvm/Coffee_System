@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Browse Drinks"
-                android:textSize="30sp" />
+                android:textSize="32sp" />
 
             <View
                 android:layout_width="0dp"
