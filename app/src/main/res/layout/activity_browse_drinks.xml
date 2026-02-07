@@ -157,6 +157,6 @@
         android:layout_below="@id/top_bar"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:listitem="@layout/item_card" />
+        tools:listitem="@layout/card_drinkproduct" />
 
 </RelativeLayout>
