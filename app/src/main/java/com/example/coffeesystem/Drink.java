@@ -3,14 +3,19 @@ package com.example.coffeesystem;
 public class Drink {
     private String name;
     private String category;
-    private float price;
-    private int imageResource;
+    private String image;
+    private boolean icedAvailable;
+    private boolean hotAvailable;
 
-    public Drink(String name, String category, float price, int imageResource) {
+
+    public Drink() {}
+
+    public Drink(String name, String category, String image, boolean icedAvailable, boolean hotAvailable) {
         this.name = name;
         this.category = category;
-        this.price = price;
-        this.imageResource = imageResource;
+        this.image = image;
+        this.icedAvailable = icedAvailable;
+        this.hotAvailable = hotAvailable;
     }
 
     public String getName() {
@@ -29,19 +34,27 @@ public class Drink {
         this.category = category;
     }
 
-    public float getPrice() {
-        return price;
+    public String getImage() {
+        return image;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public boolean isIcedAvailable() {
+        return icedAvailable;
     }
 
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setIcedAvailable(boolean icedAvailable) {
+        this.icedAvailable = icedAvailable;
+    }
+
+    public boolean isHotAvailable() {
+        return hotAvailable;
+    }
+
+    public void setHotAvailable(boolean hotAvailable) {
+        this.hotAvailable = hotAvailable;
     }
 }
