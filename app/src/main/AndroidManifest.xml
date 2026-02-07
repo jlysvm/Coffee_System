@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeSystem">
         <activity
-            android:name=".AdminDashboard"
+            android:name=".screens.AdminDashboard"
             android:exported="false" />
         <activity
-            android:name=".UserDashboard"
+            android:name=".screens.UserDashboard"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

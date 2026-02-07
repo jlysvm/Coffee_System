@@ -1,4 +1,4 @@
-package com.example.coffeesystem;
+package com.example.coffeesystem.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.coffeesystem.R;
+import com.example.coffeesystem.models.Drink;
 
 import java.util.List;
 

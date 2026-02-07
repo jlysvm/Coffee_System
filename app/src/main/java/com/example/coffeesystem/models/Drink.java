@@ -1,4 +1,4 @@
-package com.example.coffeesystem;
+package com.example.coffeesystem.models;
 
 public class Drink {
     private String name;
