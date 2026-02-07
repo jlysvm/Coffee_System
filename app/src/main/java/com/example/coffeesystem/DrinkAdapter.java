@@ -1,5 +1,6 @@
 package com.example.coffeesystem;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
-
+    private Context mContext;
     private List<Drink> drinkList;
 
-    public DrinkAdapter(List<Drink> drinkList) {
-        this.drinkList = drinkList;
+    public DrinkAdapter(Context context, List<Drink> drinks) {
+        this.mContext = context;
+        this.drinkList = drinks;
     }
 
     @NonNull
     @Override
     public DrinkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflates your CardView layout
-        View view = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_card, parent, false);
         return new DrinkViewHolder(view);
     }
@@ -31,11 +32,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink currentDrink = drinkList.get(position);
+        int imageResourceId = mContext.getResources().getIdentifier(
+                currentDrink.getImage(), "drawable", mContext.getPackageName()
+        );
 
-        // Setting the data per drink
         holder.productName.setText(currentDrink.getName());
         holder.productCategory.setText(currentDrink.getCategory());
-        holder.productImage.setImageResource(currentDrink.getImageResource());
+        holder.productImage.setImageResource(imageResourceId);
     }
 
     @Override
