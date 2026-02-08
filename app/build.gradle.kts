@@ -22,10 +22,6 @@ android {
         version = release(36)
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         applicationId = "com.example.coffeesystem"
         minSdk = 26
@@ -48,12 +44,14 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 }
