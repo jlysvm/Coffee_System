@@ -1,6 +1,7 @@
 package com.example.coffeesystem.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
+import com.example.coffeesystem.repository.DrinkRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
+    private static final DrinkRepository drinkRepository = new DrinkRepository();
+    private HashMap<String, Bitmap> imageCache = new HashMap<>();
     private Context mContext;
     private List<Drink> drinkList;
 
@@ -35,13 +41,43 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink currentDrink = drinkList.get(position);
-        int imageResourceId = mContext.getResources().getIdentifier(
-                "drink_"+currentDrink.getImage(), "drawable", mContext.getPackageName()
-        );
 
         holder.productName.setText(currentDrink.getName());
         holder.productCategory.setText(currentDrink.getCategory());
-        holder.productImage.setImageResource(imageResourceId);
+
+        String imageFileName = currentDrink.getImage();
+
+        if (imageCache.containsKey(imageFileName)) {
+            holder.productImage.setImageBitmap(imageCache.get(imageFileName));
+            return;
+        }
+
+        holder.productImage.setTag(imageFileName);
+
+        drinkRepository.getDrinkImage(imageFileName, new FetchCallback<>() {
+            @Override
+            public void onSuccess(Bitmap result) {
+                if (imageFileName.equals(holder.productImage.getTag())) {
+                    holder.productImage.setImageBitmap(result);
+                    imageCache.put(imageFileName, result);
+                }
+            }
+
+            @Override
+            public void onNotFound() {
+//                holder.productImage.setImageResource(R.drawable.image_not_found);
+            }
+
+            @Override
+            public void onError(int code) {
+//                holder.productImage.setImageResource(R.drawable.image_not_found);
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+//                holder.productImage.setImageResource(R.drawable.image_not_found);
+            }
+        });
     }
 
     @Override

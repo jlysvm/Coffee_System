@@ -1,5 +1,7 @@
 package com.example.coffeesystem.repository;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.coffeesystem.BuildConfig;
@@ -73,4 +75,30 @@ public class DrinkRepository {
         }).start();
     }
 
+    public void getDrinkImage(String fileName, FetchCallback<Bitmap> callback) {
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+            String url = supabaseUrl + "/storage/v1/object/drink_images/" + fileName;
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("apikey", supabaseKey)
+                    .addHeader("Authorization", "Bearer " + supabaseKey)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+
+                if (response.isSuccessful()) {
+                    byte[] imageBytes = response.body().bytes();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    callback.onSuccess(bitmap);
+                }
+                else if (response.code() == 404) callback.onNotFound();
+                else callback.onError(response.code());
+
+            } catch (Exception e) {
+                callback.onNetworkError(e);
+            }
+        }).start();
+    }
 }
