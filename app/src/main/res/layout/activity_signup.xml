@@ -6,7 +6,7 @@
     android:id="@+id/signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/secondary"
     android:padding="24dp"
     tools:context=".activities.auth.SignUpActivity">
 
@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="SIGN UP"
-        android:backgroundTint="@color/button"
+        android:backgroundTint="@color/primary2"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordInput"
         android:layout_marginTop="60dp"/>
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already have an account? Login"
-            android:textColor="@color/button"
+            android:textColor="@color/primary1"
             android:padding="8dp"
             android:textStyle="bold"/>
     </LinearLayout>

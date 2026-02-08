@@ -6,7 +6,7 @@
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/secondary"
     android:padding="24dp"
     tools:context=".activities.auth.LoginActivity">
 
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="LOG IN"
-        android:backgroundTint="@color/button"
+        android:backgroundTint="@color/primary2"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/passwordInput"
         android:layout_marginTop="80dp"/>
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Sign Up"
-            android:textColor="@color/button"
+            android:textColor="@color/primary1"
             android:padding="8dp"
             android:textStyle="bold"/>
 
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Continue as Guest"
-            android:textColor="@color/black"
+            android:textColor="@color/primary1"
             android:padding="8dp"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
