@@ -7,14 +7,24 @@
     android:layout_height="match_parent"
     android:background="#E9DFD5"
     tools:context=".UserDashboard"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="-52dp">
+    tools:layout_editor_absoluteX="-4dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="203dp"
+        android:layout_height="161dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_icon4" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="192dp"
+        android:layout_marginStart="208dp"
         android:layout_marginTop="220dp"
         android:text="Username"
         android:textColor="#131010"
@@ -22,20 +32,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="149dp"
-        android:layout_height="255dp"
-        android:layout_marginStart="128dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="220dp"
         android:text="Welcome,"
         android:textColor="#131010"
