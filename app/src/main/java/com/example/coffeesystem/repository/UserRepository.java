@@ -10,7 +10,7 @@ import okhttp3.Response;
 
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.callbacks.InsertCallback;
-import com.example.coffeesystem.callbacks.UserFetchCallback;
+import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.User;
 
 import org.json.JSONArray;
@@ -60,7 +60,7 @@ public class UserRepository {
         }).start();
     }
 
-    public void getUserByEmail(String email, UserFetchCallback callback) {
+    public void getUserByEmail(String email, FetchCallback<User> callback) {
         OkHttpClient client = new OkHttpClient();
 
         String url = supabaseUrl+"/rest/v1/rpc/get_user_by_email";
@@ -110,13 +110,5 @@ public class UserRepository {
                 callback.onNetworkError(e);
             }
         }).start();
-    }
-
-    public static String getSupabaseUrl() {
-        return supabaseUrl;
-    }
-
-    public static String getSupabaseKey() {
-        return supabaseKey;
     }
 }

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.coffeesystem.activities.dashboard.AdminDashboard;
 import com.example.coffeesystem.activities.dashboard.UserDashboard;
-import com.example.coffeesystem.callbacks.UserFetchCallback;
+import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.databinding.ActivityLoginBinding;
 import com.example.coffeesystem.models.User;
 import com.example.coffeesystem.repository.UserRepository;
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         UserRepository repository = new UserRepository();
 
-        repository.getUserByEmail(email, new UserFetchCallback() {
+        repository.getUserByEmail(email, new FetchCallback<User>() {
             @Override
             public void onSuccess(User user) {
                 runOnUiThread(() -> {
