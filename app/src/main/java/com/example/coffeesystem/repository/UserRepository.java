@@ -23,7 +23,7 @@ public class UserRepository {
     public void insertUser(User user, InsertCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl + "/rest/v1/users";
+        String url = supabaseUrl + "/rest/v1/accounts";
         String jsonBody =
                 "{"
                     + "\"username\":\"" + user.getUsername() + "\","
@@ -64,7 +64,7 @@ public class UserRepository {
         OkHttpClient client = new OkHttpClient();
 
         String url = supabaseUrl
-                    + "/rest/v1/users"
+                    + "/rest/v1/accounts"
                     + "?email=eq." + email
                     + "&select=username,email,password,role_id"
                     + "&limit=1";
