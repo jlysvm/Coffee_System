@@ -1,5 +1,6 @@
 package com.example.coffeesystem.activities.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.dashboard.AdminDashboard;
+import com.example.coffeesystem.activities.dashboard.UserDashboard;
 import com.example.coffeesystem.callbacks.UserFetchCallback;
 import com.example.coffeesystem.databinding.FragmentLoginBinding;
 import com.example.coffeesystem.models.User;
@@ -67,8 +70,12 @@ public class LoginFragment extends Fragment {
             public void onSuccess(User user) {
                 requireActivity().runOnUiThread(() -> {
                     if (BCrypt.checkpw(password, user.getPassword())) {
+                        AuthActivity.setAuthenticatedUser(user);
                         Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                        // TODO: navigate to dashboard (Intent)
+
+                        Intent intent = new Intent(requireContext(), user.getRoleID() == 3 ? AdminDashboard.class : UserDashboard.class);
+                        startActivity(intent);
+                        requireActivity().finish();
                     } else {
                         Toast.makeText(requireContext(), "Incorrect password", Toast.LENGTH_SHORT).show();
                     }
