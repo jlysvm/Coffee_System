@@ -26,7 +26,7 @@ public class DrinkRepository {
         OkHttpClient client = new OkHttpClient();
 
         String url = supabaseUrl+"/rest/v1/rpc/get_all_drinks";
-        RequestBody body = RequestBody.create("", MediaType.parse("application/json"));
+        RequestBody body = RequestBody.create("{}", MediaType.parse("application/json"));
 
         Request request = new Request.Builder()
                 .url(url)

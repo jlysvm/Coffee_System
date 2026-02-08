@@ -36,7 +36,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink currentDrink = drinkList.get(position);
         int imageResourceId = mContext.getResources().getIdentifier(
-                currentDrink.getImage(), "drawable", mContext.getPackageName()
+                "drink_"+currentDrink.getImage(), "drawable", mContext.getPackageName()
         );
 
         holder.productName.setText(currentDrink.getName());

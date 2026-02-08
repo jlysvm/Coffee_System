@@ -3,6 +3,7 @@
     android:id="@+id/drink_category"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="8dp"
     android:paddingHorizontal="10dp"
     android:paddingVertical="5dp"
     android:background="@drawable/rounded_bg_black"
