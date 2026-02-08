@@ -2,20 +2,18 @@ package com.example.coffeesystem.models;
 
 public class Drink {
     private String name;
-    private String category;
+    private String description;
     private String image;
-    private boolean icedAvailable;
-    private boolean hotAvailable;
+    private String category;
+    private String ingredients;
 
 
-    public Drink() {}
-
-    public Drink(String name, String category, String image, boolean icedAvailable, boolean hotAvailable) {
+    public Drink(String name, String description, String image, String category, String ingredients) {
         this.name = name;
-        this.category = category;
+        this.description = description;
         this.image = image;
-        this.icedAvailable = icedAvailable;
-        this.hotAvailable = hotAvailable;
+        this.category = category;
+        this.ingredients = ingredients;
     }
 
     public String getName() {
@@ -26,12 +24,12 @@ public class Drink {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImage() {
@@ -42,19 +40,19 @@ public class Drink {
         this.image = image;
     }
 
-    public boolean isIcedAvailable() {
-        return icedAvailable;
+    public String getCategory() {
+        return category;
     }
 
-    public void setIcedAvailable(boolean icedAvailable) {
-        this.icedAvailable = icedAvailable;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public boolean isHotAvailable() {
-        return hotAvailable;
+    public String getIngredients() {
+        return ingredients;
     }
 
-    public void setHotAvailable(boolean hotAvailable) {
-        this.hotAvailable = hotAvailable;
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
     }
 }
