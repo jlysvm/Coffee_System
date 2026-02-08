@@ -1,5 +1,7 @@
 package com.example.coffeesystem.repository;
 
+import android.util.Log;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,14 +40,16 @@ public class UserRepository {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
-                .addHeader("apikey", "YOUR_SUPABASE_ANON_KEY")
-                .addHeader("Authorization", "Bearer YOUR_SUPABASE_ANON_KEY")
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Authorization", "Bearer " + supabaseKey)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Prefer", "return=minimal")
                 .build();
 
         new Thread(() -> {
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
 
                 if (response.isSuccessful()) callback.onSuccess();
                 else callback.onError(response.code());
@@ -100,6 +104,7 @@ public class UserRepository {
                 callback.onSuccess(user);
 
             } catch (Exception e) {
+                Log.e("UserRepository", "Error fetching user by email", e);
                 callback.onNetworkError(e);
             }
         }).start();
