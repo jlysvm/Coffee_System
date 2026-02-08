@@ -11,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
@@ -21,7 +25,6 @@ import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
     private static final DrinkRepository drinkRepository = new DrinkRepository();
-    private HashMap<String, Bitmap> imageCache = new HashMap<>();
     private Context mContext;
     private List<Drink> drinkList;
 
@@ -41,43 +44,21 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink currentDrink = drinkList.get(position);
+        String imageFileName = currentDrink.getImage();
 
         holder.productName.setText(currentDrink.getName());
         holder.productCategory.setText(currentDrink.getCategory());
 
-        String imageFileName = currentDrink.getImage();
-
-        if (imageCache.containsKey(imageFileName)) {
-            holder.productImage.setImageBitmap(imageCache.get(imageFileName));
-            return;
-        }
-
-        holder.productImage.setTag(imageFileName);
-
-        drinkRepository.getDrinkImage(imageFileName, new FetchCallback<>() {
-            @Override
-            public void onSuccess(Bitmap result) {
-                if (imageFileName.equals(holder.productImage.getTag())) {
-                    holder.productImage.setImageBitmap(result);
-                    imageCache.put(imageFileName, result);
-                }
-            }
-
-            @Override
-            public void onNotFound() {
-//                holder.productImage.setImageResource(R.drawable.image_not_found);
-            }
-
-            @Override
-            public void onError(int code) {
-//                holder.productImage.setImageResource(R.drawable.image_not_found);
-            }
-
-            @Override
-            public void onNetworkError(Exception e) {
-//                holder.productImage.setImageResource(R.drawable.image_not_found);
-            }
-        });
+        GlideUrl glideUrl = new GlideUrl(
+            BuildConfig.SUPABASE_URL+"/storage/v1/object/drink_images/"+imageFileName,
+            new LazyHeaders.Builder()
+                    .addHeader("apikey", BuildConfig.SUPABASE_KEY)
+                    .addHeader("Authorization", "Bearer " + BuildConfig.SUPABASE_KEY)
+                    .build()
+        );
+        Glide.with(mContext)
+            .load(glideUrl)
+            .into(holder.productImage);
     }
 
     @Override
