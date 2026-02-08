@@ -8,6 +8,7 @@ import com.example.coffeesystem.callbacks.FetchCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -45,7 +46,7 @@ public class CategoryRepository {
                 }
 
                 JSONArray jsonArray = new JSONArray(responseBody);
-                List<String> categories = new java.util.ArrayList<>();
+                List<String> categories = new ArrayList<>();
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject obj = jsonArray.getJSONObject(i);
