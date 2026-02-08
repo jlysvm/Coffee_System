@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/browse_drinks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
     android:paddingVertical="6dp"
-    tools:context=".MainActivity">
+    android:background="@color/neutral_background"
+    tools:context=".activities.browse.BrowseDrinks">
 
     <LinearLayout
         android:id="@+id/top_bar"
@@ -16,7 +17,6 @@
         android:layout_marginTop="36dp"
         android:layout_marginBottom="12dp"
         android:paddingHorizontal="20dp"
-        android:background="#EEEEEE"
         android:orientation="vertical"
         android:gravity="bottom" >
 
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Browse Drinks"
-                android:textSize="30sp" />
+                android:textSize="32sp" />
 
             <View
                 android:layout_width="0dp"
@@ -51,7 +51,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp"
             android:background="@drawable/searchbar_bg" >
@@ -59,13 +59,13 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/outline_data_loss_prevention_36"
+                android:background="@drawable/profile_btn"
                 android:layout_marginRight="8dp" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Search for coffee..."
+                android:hint="Search for drinks..."
                 android:inputType="text" />
 
         </LinearLayout>
@@ -157,6 +157,6 @@
         android:layout_below="@id/top_bar"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:listitem="@layout/item_card" />
+        tools:listitem="@layout/card_drinkproduct" />
 
 </RelativeLayout>
