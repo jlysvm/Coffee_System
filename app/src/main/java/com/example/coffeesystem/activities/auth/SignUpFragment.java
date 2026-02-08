@@ -74,7 +74,7 @@ public class SignUpFragment extends Fragment {
         }
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User newUser = new User(username, email, hashedPassword);
+        User newUser = new User(username, email, hashedPassword, 2);
         UserRepository repository = new UserRepository();
 
         repository.insertUser(newUser, new InsertCallback() {

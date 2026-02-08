@@ -26,7 +26,8 @@ public class UserRepository {
                 "{"
                     + "\"username\":\"" + user.getUsername() + "\","
                     + "\"email\":\"" + user.getEmail() + "\","
-                    + "\"password\":\"" + user.getPassword() + "\""
+                    + "\"password\":\"" + user.getPassword() + "\","
+                    + "\"role_id\":\"" + Integer.toString(user.getRoleID()) + "\""
                 + "}";
 
         RequestBody body = RequestBody.create(
@@ -61,7 +62,7 @@ public class UserRepository {
         String url = supabaseUrl
                     + "/rest/v1/users"
                     + "?email=eq." + email
-                    + "&select=username,email,password"
+                    + "&select=username,email,password,role_id"
                     + "&limit=1";
 
         Request request = new Request.Builder()
@@ -92,7 +93,8 @@ public class UserRepository {
                 User user = new User(
                     json.getString("username"),
                     json.getString("email"),
-                    json.getString("password")
+                    json.getString("password"),
+                    Integer.parseInt(json.getString("role_id"))
                 );
 
                 callback.onSuccess(user);
