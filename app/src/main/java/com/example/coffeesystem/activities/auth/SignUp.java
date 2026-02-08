@@ -1,4 +1,4 @@
-package com.example.coffeesystem.screens;
+package com.example.coffeesystem.activities.auth;
 
 import android.os.Bundle;
 import android.text.TextUtils;

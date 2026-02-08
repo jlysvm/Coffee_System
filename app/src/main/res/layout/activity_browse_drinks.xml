@@ -8,7 +8,7 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="6dp"
     android:background="@color/neutral_background"
-    tools:context=".screens.MainActivity">
+    tools:context=".activities.browse.BrowseDrinks">
 
     <LinearLayout
         android:id="@+id/top_bar"

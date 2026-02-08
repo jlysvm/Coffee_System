@@ -12,17 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeSystem">
         <activity
-            android:name=".screens.AdminDashboard"
+            android:name=".activities.dashboard.AdminDashboard"
             android:exported="false" />
         <activity
-            android:name=".screens.UserDashboard"
+            android:name=".activities.dashboard.UserDashboard"
             android:exported="false" />
         <activity
-            android:name=".screens.MainActivity"
+            android:name=".activities.browse.BrowseDrinks"
+            android:exported="false" />
+        <activity
+            android:name=".activities.auth.SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".activities.auth.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
