@@ -3,44 +3,30 @@ package com.example.coffeesystem.activities.auth;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.coffeesystem.callbacks.InsertCallback;
-import com.example.coffeesystem.databinding.FragmentSignupBinding;
+import com.example.coffeesystem.databinding.ActivitySignupBinding;
 import com.example.coffeesystem.models.User;
 import com.example.coffeesystem.repository.UserRepository;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class SignUpFragment extends Fragment {
+public class SignUpActivity extends AppCompatActivity {
 
-    private FragmentSignupBinding binding;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentSignupBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
+    private ActivitySignupBinding binding;
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         binding.signupButton.setOnClickListener(v -> handleSignUp());
-
-        binding.loginLink.setOnClickListener(v ->
-            NavHostFragment.findNavController(this).navigateUp()
-        );
+        binding.loginLink.setOnClickListener(v -> finish());
     }
 
     private void handleSignUp() {
@@ -50,23 +36,21 @@ public class SignUpFragment extends Fragment {
         String confirmPassword = binding.confirmPasswordInput.getText().toString().trim();
 
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) ||
-                TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailInput.setError("Please enter a valid email address");
             binding.emailInput.requestFocus();
             return;
         }
-
         if (!password.equals(confirmPassword)) {
             binding.confirmPasswordInput.setError("Passwords do not match!");
             binding.confirmPasswordInput.requestFocus();
             return;
         }
-
         if (password.length() < 8) {
             binding.passwordInput.setError("Password must be at least 8 characters");
             binding.passwordInput.requestFocus();
@@ -80,31 +64,25 @@ public class SignUpFragment extends Fragment {
         repository.insertUser(newUser, new InsertCallback() {
             @Override
             public void onSuccess() {
-                requireActivity().runOnUiThread(() -> {
-                    Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(SignUpFragment.this).navigateUp();
+                runOnUiThread(() -> {
+                    Toast.makeText(SignUpActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    finish();
                 });
             }
 
             @Override
             public void onError(int code) {
-                requireActivity().runOnUiThread(() ->
-                    Toast.makeText(requireContext(), "Sign up failed: " + code, Toast.LENGTH_SHORT).show()
+                runOnUiThread(() ->
+                    Toast.makeText(SignUpActivity.this, "Sign up failed: " + code, Toast.LENGTH_SHORT).show()
                 );
             }
 
             @Override
             public void onNetworkError(Exception e) {
-                requireActivity().runOnUiThread(() ->
-                    Toast.makeText(requireContext(), "Network error", Toast.LENGTH_SHORT).show()
+                runOnUiThread(() ->
+                    Toast.makeText(SignUpActivity.this, "Network error", Toast.LENGTH_SHORT).show()
                 );
             }
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

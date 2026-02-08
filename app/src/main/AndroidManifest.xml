@@ -20,7 +20,10 @@
             android:name=".activities.browse.BrowseDrinks"
             android:exported="false" />
         <activity
-            android:name=".activities.auth.AuthActivity"
+            android:name=".activities.auth.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
