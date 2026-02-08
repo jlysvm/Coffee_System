@@ -59,7 +59,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(
                                 LoginActivity.this,
-                                user.getRoleID() == 3 ? AdminDashboard.class : UserDashboard.class
+                                user.getRole().equalsIgnoreCase("USER") ?
+                                        UserDashboard.class : AdminDashboard.class
                         );
                         startActivity(intent);
                         finish();

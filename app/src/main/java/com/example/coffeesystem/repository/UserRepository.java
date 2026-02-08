@@ -23,13 +23,13 @@ public class UserRepository {
     public void insertUser(User user, InsertCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl + "/rest/v1/accounts";
+        String url = supabaseUrl + "/rest/v1/rpc/insert_user";
         String jsonBody =
                 "{"
-                    + "\"username\":\"" + user.getUsername() + "\","
-                    + "\"email\":\"" + user.getEmail() + "\","
-                    + "\"password\":\"" + user.getPassword() + "\","
-                    + "\"role_id\":\"" + Integer.toString(user.getRoleID()) + "\""
+                    + "\"p_username\":\"" + user.getUsername() + "\","
+                    + "\"p_email\":\"" + user.getEmail() + "\","
+                    + "\"p_password\":\"" + user.getPassword() + "\","
+                    + "\"p_role_name\":\"" + user.getRole() + "\""
                 + "}";
 
         RequestBody body = RequestBody.create(
@@ -63,12 +63,17 @@ public class UserRepository {
     public void getUserByEmail(String email, UserFetchCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl+"/rest/v1/accounts"+"?email=eq."+email+
-                    "&select=username,email,password,role_id"+"&limit=1";
+        String url = supabaseUrl+"/rest/v1/rpc/get_user_by_email";
+        String jsonBody = "{"+"\"p_email\":\""+email+"\"}";
+
+        RequestBody body = RequestBody.create(
+                jsonBody,
+                MediaType.parse("application/json")
+        );
 
         Request request = new Request.Builder()
                 .url(url)
-                .get()
+                .post(body)
                 .addHeader("apikey", supabaseKey)
                 .addHeader("Authorization", "Bearer " + supabaseKey)
                 .addHeader("Content-Type", "application/json")
@@ -76,32 +81,32 @@ public class UserRepository {
 
         new Thread(() -> {
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
 
                 if (!response.isSuccessful()) {
                     callback.onError(response.code());
                     return;
                 }
 
-                String body = response.body().string();
-
-                if (body.equals("[]")) {
+                if (responseBody.equals("[]")) {
                     callback.onNotFound();
                     return;
                 }
 
-                JSONObject json = new JSONArray(body).getJSONObject(0);
+                JSONObject json = new JSONArray(responseBody).getJSONObject(0);
 
                 User user = new User(
                     json.getString("username"),
                     json.getString("email"),
                     json.getString("password"),
-                    Integer.parseInt(json.getString("role_id"))
+                    json.getString("role_name")
                 );
 
                 callback.onSuccess(user);
 
             } catch (Exception e) {
-                Log.e("UserRepository", "Error fetching user by email", e);
+                Log.e("Login", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();

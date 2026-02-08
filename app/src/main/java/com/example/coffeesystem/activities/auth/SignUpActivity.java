@@ -58,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User newUser = new User(username, email, hashedPassword, 2);
+        User newUser = new User(username, email, hashedPassword, "USER");
         UserRepository repository = new UserRepository();
 
         repository.insertUser(newUser, new InsertCallback() {
