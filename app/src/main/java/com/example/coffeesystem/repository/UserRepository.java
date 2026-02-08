@@ -63,11 +63,8 @@ public class UserRepository {
     public void getUserByEmail(String email, UserFetchCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl
-                    + "/rest/v1/accounts"
-                    + "?email=eq." + email
-                    + "&select=username,email,password,role_id"
-                    + "&limit=1";
+        String url = supabaseUrl+"/rest/v1/accounts"+"?email=eq."+email+
+                    "&select=username,email,password,role_id"+"&limit=1";
 
         Request request = new Request.Builder()
                 .url(url)
