@@ -7,6 +7,7 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="5dp"
     android:background="@drawable/rounded_bg_black"
+    android:backgroundTint="@color/primary1"
     android:text="Category"
     android:textColor="@color/white"
     android:textSize="16sp" />
