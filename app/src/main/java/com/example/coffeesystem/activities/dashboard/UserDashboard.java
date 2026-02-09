@@ -2,6 +2,7 @@ package com.example.coffeesystem.activities.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -36,10 +37,16 @@ public class UserDashboard extends AppCompatActivity {
             Intent intent = new Intent(UserDashboard.this, BrowseDrinks.class);
             startActivity(intent);
         });
-        myFavoritesBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(UserDashboard.this, FavoriteDrinks.class);
-            startActivity(intent);
-        });
+
+        if ("GUEST".equalsIgnoreCase(LoginActivity.getAuthenticatedUser().getRole())) {
+            myFavoritesBtn.setVisibility(View.GONE);
+        }
+        else {
+            myFavoritesBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(UserDashboard.this, FavoriteDrinks.class);
+                startActivity(intent);
+            });
+        }
 
         TextView username = findViewById(R.id.textView2);
         username.setText(LoginActivity.getAuthenticatedUser().getUsername());

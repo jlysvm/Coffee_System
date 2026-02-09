@@ -79,8 +79,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
             Glide.with(mContext).load(glideUrl).into(drinkImage);
 
-            ViewGroup parent = (ViewGroup) favoriteButton.getParent();
-            parent.removeView(favoriteButton);
+            favoriteButton.setVisibility(View.INVISIBLE);
 
             drinkName.setText(currentDrink.getName());
             drinkCategory.setText(currentDrink.getCategory());

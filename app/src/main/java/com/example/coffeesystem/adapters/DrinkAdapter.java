@@ -82,7 +82,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             drinkCategory.setText(currentDrink.getCategory());
             drinkDescription.setText(currentDrink.getDescription());
             drinkIngredients.setText(currentDrink.getIngredients());
-            updateFavoriteButton(favoriteButton, currentDrink);
+
+            if ("GUEST".equalsIgnoreCase(LoginActivity.getAuthenticatedUser().getRole()))
+                favoriteButton.setVisibility(View.INVISIBLE);
+            else
+                updateFavoriteButton(favoriteButton, currentDrink);
 
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
