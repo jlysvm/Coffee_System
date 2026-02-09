@@ -2,6 +2,7 @@ package com.example.coffeesystem.activities.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.activities.browse.BrowseDrinks;
 
 public class UserDashboard extends AppCompatActivity {
@@ -32,5 +34,8 @@ public class UserDashboard extends AppCompatActivity {
             Intent intent = new Intent(UserDashboard.this, BrowseDrinks.class);
             startActivity(intent);
         });
+
+        TextView username = findViewById(R.id.textView2);
+        username.setText(LoginActivity.getAuthenticatedUser().getUsername());
     }
 }

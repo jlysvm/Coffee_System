@@ -102,4 +102,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public static User getAuthenticatedUser() { return authenticatedUser; }
 }
