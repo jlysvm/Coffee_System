@@ -58,11 +58,13 @@ public class DrinkRepository {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject obj = jsonArray.getJSONObject(i);
                     drinks.add(new Drink(
+                        obj.getLong("id"),
                         obj.getString("name"),
                         obj.getString("description"),
                         obj.getString("image"),
                         obj.getString("category"),
-                        obj.getString("ingredients")
+                        obj.getString("ingredients"),
+                        obj.getBoolean("is_favorited")
                     ));
                 }
 

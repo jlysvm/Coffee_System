@@ -1,19 +1,28 @@
 package com.example.coffeesystem.models;
 
 public class Drink {
+    private long id;
     private String name;
     private String description;
     private String image;
     private String category;
     private String ingredients;
+    private boolean isFavorited;
 
 
-    public Drink(String name, String description, String image, String category, String ingredients) {
+    public Drink(long id, String name, String description, String image,
+                 String category, String ingredients, boolean isFavorited) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
         this.category = category;
         this.ingredients = ingredients;
+        this.isFavorited = isFavorited;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -54,5 +63,13 @@ public class Drink {
 
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public boolean isFavorited() {
+        return isFavorited;
+    }
+
+    public void setFavorited(boolean isFavorited) {
+        this.isFavorited = isFavorited;
     }
 }
