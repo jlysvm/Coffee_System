@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
-import com.example.coffeesystem.activities.browse.BrowseDrinks;
+import com.example.coffeesystem.activities.drinks.BrowseDrinks;
 
 public class UserDashboard extends AppCompatActivity {
 
