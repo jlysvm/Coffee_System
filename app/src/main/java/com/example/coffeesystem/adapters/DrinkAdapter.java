@@ -1,6 +1,7 @@
 package com.example.coffeesystem.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
+import com.example.coffeesystem.repository.DrinkRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
+    private static final DrinkRepository drinkRepository = new DrinkRepository();
     private Context mContext;
     private List<Drink> drinkList;
 
@@ -35,13 +44,21 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink currentDrink = drinkList.get(position);
-        int imageResourceId = mContext.getResources().getIdentifier(
-                currentDrink.getImage(), "drawable", mContext.getPackageName()
-        );
+        String imageFileName = currentDrink.getImage();
 
         holder.productName.setText(currentDrink.getName());
         holder.productCategory.setText(currentDrink.getCategory());
-        holder.productImage.setImageResource(imageResourceId);
+
+        GlideUrl glideUrl = new GlideUrl(
+            BuildConfig.SUPABASE_URL+"/storage/v1/object/drink_images/"+imageFileName,
+            new LazyHeaders.Builder()
+                    .addHeader("apikey", BuildConfig.SUPABASE_KEY)
+                    .addHeader("Authorization", "Bearer " + BuildConfig.SUPABASE_KEY)
+                    .build()
+        );
+        Glide.with(mContext)
+            .load(glideUrl)
+            .into(holder.productImage);
     }
 
     @Override

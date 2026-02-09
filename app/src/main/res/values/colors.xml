@@ -3,7 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="background">#E9DFD5</color>
+    <color name="primary1">#3B250B</color>
+    <color name="primary2">#6F4E37</color>
+    <color name="secondary">#E9DFD5</color>
     <color name="neutral_background">#E0E0E0</color>
-    <color name="button">#6F4E37</color>
+    <color name="neutral_hint">#646464</color>
 </resources>

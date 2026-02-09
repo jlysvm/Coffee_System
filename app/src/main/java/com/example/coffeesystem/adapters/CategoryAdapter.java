@@ -10,23 +10,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.callbacks.EventCallback;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private Context mContext;
     private List<String> categories;
+    private EventCallback<String> callback;
+    private int activePosition = 0;
 
-    public CategoryAdapter(Context context, List<String> categories) {
+    public CategoryAdapter(Context context, List<String> categories, EventCallback<String> callback) {
         this.mContext = context;
         this.categories = categories;
+        this.callback = callback;
     }
 
     @NonNull
     @Override
     public CategoryAdapter.CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.text_category, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.text_category, parent, false);
         return new CategoryAdapter.CategoryViewHolder(view);
     }
 
@@ -34,6 +37,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryAdapter.CategoryViewHolder holder, int position) {
         String category = categories.get(position);
         holder.categoryName.setText(category);
+        holder.categoryName.setSelected(position == activePosition);
+
+        holder.categoryName.setOnClickListener(v -> {
+            int clickedPosition = holder.getBindingAdapterPosition();
+            int previous = activePosition;
+            activePosition = clickedPosition;
+
+            notifyItemChanged(previous);
+            notifyItemChanged(activePosition);
+
+            callback.onEvent(categories.get(clickedPosition));
+        });
     }
 
     @Override

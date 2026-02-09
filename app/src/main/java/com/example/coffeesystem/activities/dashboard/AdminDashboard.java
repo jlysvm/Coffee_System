@@ -1,6 +1,7 @@
 package com.example.coffeesystem.activities.dashboard;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.auth.LoginActivity;
 
 public class AdminDashboard extends AppCompatActivity {
 
@@ -22,5 +24,8 @@ public class AdminDashboard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        TextView username = findViewById(R.id.textView2);
+        username.setText(LoginActivity.getAuthenticatedUser().getUsername());
     }
 }

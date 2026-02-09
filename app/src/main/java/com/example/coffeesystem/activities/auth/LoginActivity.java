@@ -30,12 +30,22 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(v -> handleLogin());
 
         binding.signUpLink.setOnClickListener(v ->
-                startActivity(new Intent(this, SignUpActivity.class))
+            startActivity(new Intent(this, SignUpActivity.class))
         );
 
-        binding.guestLink.setOnClickListener(v ->
-                Toast.makeText(this, "Continuing as Guest", Toast.LENGTH_SHORT).show()
-        );
+        binding.guestLink.setOnClickListener(v -> {
+            authenticatedUser = new User(
+                    "Guest",
+                    "No email provided",
+                    "No password provided",
+                    "GUEST"
+            );
+            Toast.makeText(this, "Continuing as Guest", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(LoginActivity.this, UserDashboard.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void handleLogin() {
@@ -92,4 +102,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public static User getAuthenticatedUser() { return authenticatedUser; }
 }

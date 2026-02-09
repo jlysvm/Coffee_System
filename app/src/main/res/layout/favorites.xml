@@ -73,13 +73,5 @@
         android:text="Back to Menu"
         android:backgroundTint="#3E2723" />
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Log out"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#D32F2F" />
 
 </LinearLayout>
