@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.coffeesystem.BuildConfig;
+import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
 
@@ -27,11 +28,11 @@ public class DrinkRepository {
     public void getAllDrinks(FetchCallback<List<Drink>> callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl+"/rest/v1/rpc/get_all_drinks";
-        RequestBody body = RequestBody.create("{}", MediaType.parse("application/json"));
+        String json = "{\"p_userid\":"+LoginActivity.getAuthenticatedUser().getId()+"}";
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
 
         Request request = new Request.Builder()
-                .url(url)
+                .url(supabaseUrl+"/rest/v1/rpc/get_all_drinks")
                 .post(body)
                 .addHeader("apikey", supabaseKey)
                 .addHeader("Authorization", "Bearer " + supabaseKey)
