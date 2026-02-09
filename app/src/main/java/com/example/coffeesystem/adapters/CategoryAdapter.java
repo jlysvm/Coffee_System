@@ -16,6 +16,7 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private Context mContext;
     private List<String> categories;
+    private static int activePosition = 0;
 
     public CategoryAdapter(Context context, List<String> categories) {
         this.mContext = context;
@@ -25,8 +26,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryAdapter.CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.text_category, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.text_category, parent, false);
         return new CategoryAdapter.CategoryViewHolder(view);
     }
 
@@ -34,12 +34,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryAdapter.CategoryViewHolder holder, int position) {
         String category = categories.get(position);
         holder.categoryName.setText(category);
+        holder.categoryName.setSelected(position == activePosition);
+
+        holder.categoryName.setOnClickListener(v -> {
+            int clickedPosition = holder.getBindingAdapterPosition();
+            int previous = activePosition;
+            activePosition = clickedPosition;
+
+            notifyItemChanged(previous);
+            notifyItemChanged(activePosition);
+        });
     }
 
     @Override
     public int getItemCount() {
         return categories.size();
     }
+
+    public static int getActivePosition() { return activePosition; }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryName;
