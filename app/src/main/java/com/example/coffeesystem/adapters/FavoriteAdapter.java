@@ -1,5 +1,6 @@
 package com.example.coffeesystem.adapters;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -24,16 +25,20 @@ import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
+import com.example.coffeesystem.repository.FavoriteRepository;
 
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
+    private static final FavoriteRepository favoriteRepository = new FavoriteRepository();
     private Context mContext;
+    private List<Drink> allDrinks;
     private List<Drink> drinkList;
 
-    public FavoriteAdapter(Context context, List<Drink> drinks) {
+    public FavoriteAdapter(Context context, List<Drink> drinks, List<Drink> allDrinks) {
         this.mContext = context;
         this.drinkList = drinks;
+        this.allDrinks = allDrinks;
     }
 
     @NonNull
@@ -87,9 +92,40 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         });
 
         holder.deleteButton.setOnClickListener(v -> {
-            int pos = holder.getBindingAdapterPosition();
-            drinkList.remove(pos);
-            notifyItemRemoved(pos);
+            Context context = holder.itemView.getContext();
+
+            new AlertDialog.Builder(context)
+                .setTitle("Remove from Favorites")
+                .setMessage("Are you sure you want to remove this drink from your favorites?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    favoriteRepository.removeFavoriteDrink(
+                        LoginActivity.getAuthenticatedUser().getId(),
+                        currentDrink.getId(),
+
+                        new RequestCallback() {
+                            @Override
+                            public void onSuccess() {
+                                holder.itemView.post(() -> {
+                                    currentDrink.setFavorited(false);
+                                    int pos = holder.getBindingAdapterPosition();
+                                    if (pos != RecyclerView.NO_POSITION) {
+                                        allDrinks.remove(drinkList.remove(pos));
+                                        notifyItemRemoved(pos);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onError(int code) { }
+
+                            @Override
+                            public void onNetworkError(Exception e) { }
+                        }
+                    );
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
         });
     }
 

@@ -84,7 +84,7 @@ public class FavoriteDrinks extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     RecyclerView drinkCardContainer = findViewById(R.id.drinks_card_container);
-                    favoriteAdapter = new FavoriteAdapter(FavoriteDrinks.this, displayedDrinks);
+                    favoriteAdapter = new FavoriteAdapter(FavoriteDrinks.this, displayedDrinks, result);
                     drinkCardContainer.setAdapter(favoriteAdapter);
                 });
             }
