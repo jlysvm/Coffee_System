@@ -1,5 +1,7 @@
 package com.example.coffeesystem.repository;
 
+import android.util.Log;
+
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.callbacks.RequestCallback;
@@ -38,8 +40,10 @@ public class FavoriteRepository {
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
+
                 if (response.isSuccessful() && response.body() != null) {
-                    String responseBody = response.body().string();
                     JSONArray jsonArray = new JSONArray(responseBody);
 
                     if (jsonArray.length() == 0) {
@@ -71,6 +75,7 @@ public class FavoriteRepository {
                 }
             }
             catch (Exception e) {
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();
@@ -92,10 +97,14 @@ public class FavoriteRepository {
                 .build();
 
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
+
                 if (response.isSuccessful()) callback.onSuccess();
                 else callback.onError(response.code());
             }
             catch (Exception e) {
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();
@@ -120,10 +129,14 @@ public class FavoriteRepository {
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
+
                 if (response.isSuccessful()) callback.onSuccess();
                 else callback.onError(response.code());
             }
             catch (Exception e) {
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();

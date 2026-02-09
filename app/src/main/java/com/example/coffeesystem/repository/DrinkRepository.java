@@ -72,7 +72,7 @@ public class DrinkRepository {
                 callback.onSuccess(drinks);
 
             } catch (Exception e) {
-                Log.e("Login", "Error: ", e);
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();

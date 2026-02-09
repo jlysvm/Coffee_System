@@ -56,7 +56,7 @@ public class CategoryRepository {
                 callback.onSuccess(categories);
 
             } catch (Exception e) {
-                Log.e("Login", "Error: ", e);
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();
