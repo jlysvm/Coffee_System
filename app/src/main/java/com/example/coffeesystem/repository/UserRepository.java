@@ -97,6 +97,7 @@ public class UserRepository {
                 JSONObject json = new JSONArray(responseBody).getJSONObject(0);
 
                 User user = new User(
+                    json.getLong("id"),
                     json.getString("username"),
                     json.getString("email"),
                     json.getString("password"),
