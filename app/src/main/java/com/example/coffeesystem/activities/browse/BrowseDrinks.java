@@ -1,6 +1,7 @@
 package com.example.coffeesystem.activities.browse;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,5 +92,8 @@ public class BrowseDrinks extends AppCompatActivity {
 
             }
         });
+
+        ImageButton backBtn = findViewById(R.id.btn_back);
+        backBtn.setOnClickListener(v -> finish());
     }
 }
