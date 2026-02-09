@@ -55,9 +55,6 @@ public class BrowseDrinks extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     RecyclerView categoryContainer = findViewById(R.id.categories_container);
-                    categoryContainer.setLayoutManager(
-                        new LinearLayoutManager(BrowseDrinks.this, LinearLayoutManager.HORIZONTAL, false)
-                    );
 
                     CategoryAdapter categoryAdapter = new CategoryAdapter(BrowseDrinks.this, result,category -> {
                         if (drinkAdapter == null || allDrinks == null) return;

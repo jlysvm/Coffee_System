@@ -76,9 +76,9 @@
             <EditText
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:hint="Search for drinks..."
-                android:textColorHint="#646464"
+                android:textColorHint="@color/neutral_hint"
                 android:inputType="text"
                 android:background="@null" />
 
@@ -88,7 +88,9 @@
             android:id="@+id/categories_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/text_category" />
 
     </LinearLayout>
 
