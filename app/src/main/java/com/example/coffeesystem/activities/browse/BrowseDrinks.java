@@ -39,6 +39,8 @@ public class BrowseDrinks extends AppCompatActivity {
         categoryRepository.getCategories(new FetchCallback<>() {
             @Override
             public void onSuccess(List<String> result) {
+                result.add(0, "All");
+
                 runOnUiThread(() -> {
                     RecyclerView categoryContainer = findViewById(R.id.categories_container);
                     categoryContainer.setLayoutManager(
