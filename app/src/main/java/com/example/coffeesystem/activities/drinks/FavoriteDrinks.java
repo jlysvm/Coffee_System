@@ -11,33 +11,33 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.adapters.CategoryAdapter;
-import com.example.coffeesystem.adapters.DrinkAdapter;
+import com.example.coffeesystem.adapters.FavoriteAdapter;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.CategoryRepository;
-import com.example.coffeesystem.repository.DrinkRepository;
+import com.example.coffeesystem.repository.FavoriteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrowseDrinks extends AppCompatActivity {
+public class FavoriteDrinks extends AppCompatActivity {
     private List<Drink> allDrinks = null;
     private final List<Drink> displayedDrinks = new ArrayList<>();
     private String searchText = "";
     private String category = "All";
-    private DrinkAdapter drinkAdapter = null;
+    private FavoriteAdapter favoriteAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_browse_drinks);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.browse_drinks), (v, insets) -> {
+        setContentView(R.layout.activity_favorite_drinks);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.favorite_drinks), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -55,9 +55,9 @@ public class BrowseDrinks extends AppCompatActivity {
                 runOnUiThread(() -> {
                     RecyclerView categoryContainer = findViewById(R.id.categories_container);
 
-                    CategoryAdapter categoryAdapter = new CategoryAdapter(BrowseDrinks.this, result,category -> {
-                        if (drinkAdapter == null || allDrinks == null) return;
-                        BrowseDrinks.this.category = category;
+                    CategoryAdapter categoryAdapter = new CategoryAdapter(FavoriteDrinks.this, result,category -> {
+                        if (favoriteAdapter == null || allDrinks == null) return;
+                        FavoriteDrinks.this.category = category;
                         updateDisplayedDrinks();
                     });
 
@@ -75,8 +75,8 @@ public class BrowseDrinks extends AppCompatActivity {
             public void onNetworkError(Exception e) {}
         });
 
-        DrinkRepository drinkRepository = new DrinkRepository();
-        drinkRepository.getAllDrinks(new FetchCallback<>() {
+        FavoriteRepository favoriteRepository = new FavoriteRepository();
+        favoriteRepository.getFavoriteDrinks(LoginActivity.getAuthenticatedUser().getId(), new FetchCallback<>() {
             @Override
             public void onSuccess(List<Drink> result) {
                 allDrinks = result;
@@ -84,12 +84,8 @@ public class BrowseDrinks extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     RecyclerView drinkCardContainer = findViewById(R.id.drinks_card_container);
-                    drinkCardContainer.setLayoutManager(
-                        new GridLayoutManager(BrowseDrinks.this, 2)
-                    );
-
-                    drinkAdapter = new DrinkAdapter(BrowseDrinks.this, displayedDrinks);
-                    drinkCardContainer.setAdapter(drinkAdapter);
+                    favoriteAdapter = new FavoriteAdapter(FavoriteDrinks.this, displayedDrinks);
+                    drinkCardContainer.setAdapter(favoriteAdapter);
                 });
             }
 
@@ -113,7 +109,7 @@ public class BrowseDrinks extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (drinkAdapter == null || allDrinks == null) return;
+                if (favoriteAdapter == null || allDrinks == null) return;
                 searchText = s.toString();
                 updateDisplayedDrinks();
             }
@@ -145,13 +141,13 @@ public class BrowseDrinks extends AppCompatActivity {
             else {
                 for (Drink drink : allDrinks) {
                     if (category.equalsIgnoreCase(drink.getCategory()) &&
-                        drink.getName().toLowerCase().contains(searchText.toLowerCase()))
+                            drink.getName().toLowerCase().contains(searchText.toLowerCase()))
 
                         displayedDrinks.add(drink);
                 }
             }
         }
 
-        drinkAdapter.notifyDataSetChanged();
+        favoriteAdapter.notifyDataSetChanged();
     }
 }
