@@ -1,7 +1,9 @@
 package com.example.coffeesystem.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,11 +19,9 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.R;
-import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.DrinkRepository;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
@@ -37,7 +38,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @Override
     public DrinkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.card_drinkproduct, parent, false);
+                .inflate(R.layout.card_drink, parent, false);
         return new DrinkViewHolder(view);
     }
 
@@ -56,9 +57,28 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
                     .addHeader("Authorization", "Bearer " + BuildConfig.SUPABASE_KEY)
                     .build()
         );
-        Glide.with(mContext)
-            .load(glideUrl)
-            .into(holder.productImage);
+        Glide.with(mContext).load(glideUrl).into(holder.productImage);
+
+        holder.productCard.setOnClickListener(v -> {
+            Dialog dialog = new Dialog(v.getContext());
+            dialog.setContentView(R.layout.card_drink_info);
+
+            ImageView drinkImage = dialog.findViewById(R.id.drink_image);
+            TextView drinkName = dialog.findViewById(R.id.drink_name);
+            TextView drinkCategory = dialog.findViewById(R.id.drink_category);
+            TextView drinkDescription = dialog.findViewById(R.id.drink_description);
+            TextView drinkIngredients = dialog.findViewById(R.id.drink_ingredients);
+
+            Glide.with(mContext).load(glideUrl).into(drinkImage);
+
+            drinkName.setText(currentDrink.getName());
+            drinkCategory.setText(currentDrink.getCategory());
+            drinkDescription.setText(currentDrink.getDescription());
+            drinkIngredients.setText(currentDrink.getIngredients());
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        });
     }
 
     @Override
@@ -67,11 +87,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     }
 
     public static class DrinkViewHolder extends RecyclerView.ViewHolder {
+        CardView productCard;
         ImageView productImage;
         TextView productName, productCategory;
 
         public DrinkViewHolder(@NonNull View itemView) {
             super(itemView);
+            productCard = itemView.findViewById(R.id.product_card);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
             productCategory = itemView.findViewById(R.id.product_category);

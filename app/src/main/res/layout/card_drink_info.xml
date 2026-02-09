@@ -13,66 +13,77 @@
         android:padding="20dp">
 
         <ImageView
-            android:id="@+id/detailImage"
+            android:id="@+id/drink_image"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_marginTop="10dp"
             android:src="@android:drawable/ic_menu_gallery" />
 
         <TextView
-            android:id="@+id/detailTitle"
+            android:id="@+id/drink_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Drink Name"
-            android:textColor="#000000"
-            android:textSize="22sp"
+            android:textColor="@color/primary1"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/detailCategory"
+            android:id="@+id/drink_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Category name:"
-            android:textColor="#777777"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/detailDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#F0F4F8"
-            android:padding="16dp"
-            android:text="Description goes here..."
-            android:textColor="#444444" />
-
+            android:text="Category name"
+            android:textColor="@color/primary1"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/detailIngred"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ingredients\n..."
-                android:textSize="12sp" />
+                android:layout_marginBottom="4dp"
+                android:text="Description"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/drink_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="No description provided"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Ingredients"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/drink_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No ingredients provided"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnFavorite"
+            android:id="@+id/favorite_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/primary2"
             android:text="ADD TO FAVORITES"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
