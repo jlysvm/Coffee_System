@@ -22,43 +22,50 @@
             android:src="@android:drawable/ic_menu_gallery" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/drink_name"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/drink_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drink Name"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/drink_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drink Category"
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/delete_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Drink Name"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/drink_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Drink Category"
-                android:textSize="14sp" />
+                android:padding="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete Button"
+                android:src="@drawable/icon_delete" />
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <ImageButton
-            android:id="@+id/delete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Button"
-            android:src="@drawable/icon_delete" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
