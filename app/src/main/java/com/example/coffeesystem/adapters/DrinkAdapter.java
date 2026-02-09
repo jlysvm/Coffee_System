@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,13 +20,18 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.auth.LoginActivity;
+import com.example.coffeesystem.callbacks.FetchCallback;
+import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.DrinkRepository;
+import com.example.coffeesystem.repository.FavoriteRepository;
 
 import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
     private static final DrinkRepository drinkRepository = new DrinkRepository();
+    private static final FavoriteRepository favoriteRepository = new FavoriteRepository();
     private Context mContext;
     private List<Drink> drinkList;
 
@@ -68,6 +74,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             TextView drinkCategory = dialog.findViewById(R.id.drink_category);
             TextView drinkDescription = dialog.findViewById(R.id.drink_description);
             TextView drinkIngredients = dialog.findViewById(R.id.drink_ingredients);
+            Button favoriteButton = dialog.findViewById(R.id.favorite_btn);
 
             Glide.with(mContext).load(glideUrl).into(drinkImage);
 
@@ -75,11 +82,60 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             drinkCategory.setText(currentDrink.getCategory());
             drinkDescription.setText(currentDrink.getDescription());
             drinkIngredients.setText(currentDrink.getIngredients());
+            updateFavoriteButton(favoriteButton, currentDrink);
 
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         });
     }
+
+    private void updateFavoriteButton(Button favoriteButton, Drink currentDrink) {
+        String addTxt = "ADD TO FAVORITES";
+        String removeTxt = "REMOVE FROM FAVORITES";
+
+        if (currentDrink.isFavorited()) {
+            favoriteButton.setText(removeTxt);
+            favoriteButton.setOnClickListener(v -> {
+                favoriteRepository.removeFavoriteDrink(
+                    LoginActivity.getAuthenticatedUser().getId(),
+                    currentDrink.getId(),
+                    new RequestCallback() {
+                        @Override
+                        public void onSuccess() {
+                            currentDrink.setFavorited(false);
+                            updateFavoriteButton(favoriteButton, currentDrink);
+                        }
+
+                        @Override
+                        public void onError(int code) { }
+
+                        @Override
+                        public void onNetworkError(Exception e) { }
+                    });
+            });
+        } else {
+            favoriteButton.setText(addTxt);
+            favoriteButton.setOnClickListener(v -> {
+                favoriteRepository.addFavoriteDrink(
+                    LoginActivity.getAuthenticatedUser().getId(),
+                    currentDrink.getId(),
+                    new RequestCallback() {
+                        @Override
+                        public void onSuccess() {
+                            currentDrink.setFavorited(true);
+                            updateFavoriteButton(favoriteButton, currentDrink);
+                        }
+
+                        @Override
+                        public void onError(int code) { }
+
+                        @Override
+                        public void onNetworkError(Exception e) { }
+                    });
+            });
+        }
+    }
+
 
     @Override
     public int getItemCount() {
