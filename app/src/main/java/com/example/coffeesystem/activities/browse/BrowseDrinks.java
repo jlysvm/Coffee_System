@@ -1,6 +1,9 @@
 package com.example.coffeesystem.activities.browse;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +28,9 @@ import java.util.List;
 
 public class BrowseDrinks extends AppCompatActivity {
     private List<Drink> allDrinks = null;
-    private List<Drink> displayedDrinks = new ArrayList<>();
+    private final List<Drink> displayedDrinks = new ArrayList<>();
+    private String searchText = "";
+    private String category = "All";
     private DrinkAdapter drinkAdapter = null;
 
     @Override
@@ -38,6 +43,9 @@ public class BrowseDrinks extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        ImageButton backBtn = findViewById(R.id.btn_back);
+        backBtn.setOnClickListener(v -> finish());
 
         CategoryRepository categoryRepository = new CategoryRepository();
         categoryRepository.getCategories(new FetchCallback<>() {
@@ -52,20 +60,9 @@ public class BrowseDrinks extends AppCompatActivity {
                     );
 
                     CategoryAdapter categoryAdapter = new CategoryAdapter(BrowseDrinks.this, result,category -> {
-                        if (drinkAdapter == null) return;
-                        displayedDrinks.clear();
-
-                        if (category.equalsIgnoreCase("All")) {
-                            displayedDrinks.addAll(allDrinks);
-                        }
-                        else {
-                            for (Drink drink : allDrinks) {
-                                if (category.equalsIgnoreCase(drink.getCategory()))
-                                    displayedDrinks.add(drink);
-                            }
-                        }
-
-                        drinkAdapter.notifyDataSetChanged();
+                        if (drinkAdapter == null || allDrinks == null) return;
+                        BrowseDrinks.this.category = category;
+                        updateDisplayedDrinks();
                     });
 
                     categoryContainer.setAdapter(categoryAdapter);
@@ -122,7 +119,57 @@ public class BrowseDrinks extends AppCompatActivity {
             }
         });
 
-        ImageButton backBtn = findViewById(R.id.btn_back);
-        backBtn.setOnClickListener(v -> finish());
+        EditText searchBar = findViewById(R.id.search_bar);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (drinkAdapter == null || allDrinks == null) return;
+                searchText = s.toString();
+                updateDisplayedDrinks();
+            }
+        });
+    }
+
+    private void updateDisplayedDrinks() {
+        displayedDrinks.clear();
+        boolean categoryIsAll = category.equalsIgnoreCase("All");
+
+        if (searchText.isEmpty()) {
+            if (categoryIsAll) {
+                displayedDrinks.addAll(allDrinks);
+            }
+            else {
+                for (Drink drink : allDrinks) {
+                    if (category.equalsIgnoreCase(drink.getCategory()))
+                        displayedDrinks.add(drink);
+                }
+            }
+        }
+        else {
+            if (categoryIsAll) {
+                for (Drink drink : allDrinks) {
+                    if (drink.getName().toLowerCase().contains(searchText.toLowerCase()))
+                        displayedDrinks.add(drink);
+                }
+            }
+            else {
+                for (Drink drink : allDrinks) {
+                    if (category.equalsIgnoreCase(drink.getCategory()) &&
+                        drink.getName().toLowerCase().contains(searchText.toLowerCase()))
+
+                        displayedDrinks.add(drink);
+                }
+            }
+        }
+
+        drinkAdapter.notifyDataSetChanged();
     }
 }
