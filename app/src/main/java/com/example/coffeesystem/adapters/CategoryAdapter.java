@@ -10,17 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.callbacks.EventCallback;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private Context mContext;
     private List<String> categories;
-    private static int activePosition = 0;
+    private EventCallback<String> callback;
+    private int activePosition = 0;
 
-    public CategoryAdapter(Context context, List<String> categories) {
+    public CategoryAdapter(Context context, List<String> categories, EventCallback<String> callback) {
         this.mContext = context;
         this.categories = categories;
+        this.callback = callback;
     }
 
     @NonNull
@@ -43,6 +46,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
             notifyItemChanged(previous);
             notifyItemChanged(activePosition);
+
+            callback.onEvent(categories.get(clickedPosition));
         });
     }
 
@@ -50,8 +55,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public int getItemCount() {
         return categories.size();
     }
-
-    public static int getActivePosition() { return activePosition; }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryName;

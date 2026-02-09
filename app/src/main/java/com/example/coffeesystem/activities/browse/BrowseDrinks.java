@@ -20,9 +20,13 @@ import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.CategoryRepository;
 import com.example.coffeesystem.repository.DrinkRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrowseDrinks extends AppCompatActivity {
+    private List<Drink> allDrinks = null;
+    private List<Drink> displayedDrinks = new ArrayList<>();
+    private DrinkAdapter drinkAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,25 @@ public class BrowseDrinks extends AppCompatActivity {
                     categoryContainer.setLayoutManager(
                         new LinearLayoutManager(BrowseDrinks.this, LinearLayoutManager.HORIZONTAL, false)
                     );
-                    categoryContainer.setAdapter(new CategoryAdapter(BrowseDrinks.this, result));
+
+                    CategoryAdapter categoryAdapter = new CategoryAdapter(BrowseDrinks.this, result,category -> {
+                        if (drinkAdapter == null) return;
+                        displayedDrinks.clear();
+
+                        if (category.equalsIgnoreCase("All")) {
+                            displayedDrinks.addAll(allDrinks);
+                        }
+                        else {
+                            for (Drink drink : allDrinks) {
+                                if (category.equalsIgnoreCase(drink.getCategory()))
+                                    displayedDrinks.add(drink);
+                            }
+                        }
+
+                        drinkAdapter.notifyDataSetChanged();
+                    });
+
+                    categoryContainer.setAdapter(categoryAdapter);
                 });
             }
 
@@ -70,12 +92,17 @@ public class BrowseDrinks extends AppCompatActivity {
         drinkRepository.getAllDrinks(new FetchCallback<>() {
             @Override
             public void onSuccess(List<Drink> result) {
+                allDrinks = result;
+                displayedDrinks.addAll(result);
+
                 runOnUiThread(() -> {
                     RecyclerView drinkCardContainer = findViewById(R.id.drinks_card_container);
                     drinkCardContainer.setLayoutManager(
                         new GridLayoutManager(BrowseDrinks.this, 2)
                     );
-                    drinkCardContainer.setAdapter(new DrinkAdapter(BrowseDrinks.this, result));
+
+                    drinkAdapter = new DrinkAdapter(BrowseDrinks.this, displayedDrinks);
+                    drinkCardContainer.setAdapter(drinkAdapter);
                 });
             }
 
