@@ -93,7 +93,6 @@ public class AdminCreateDrink extends AppCompatActivity {
             public void onSuccess(List<String> result) {
                 runOnUiThread(() -> {
                     adapter.clear();
-                    adapter.add("Select Category");
                     adapter.addAll(result);
                     etCatId.setSelection(0);
                 });
