@@ -9,6 +9,16 @@ public class Drink {
     private String ingredients;
     private boolean isFavorited;
 
+    public Drink(String name, String description, String image,
+                 String category, String ingredients, boolean isFavorited) {
+        this.id = 0;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.category = category;
+        this.ingredients = ingredients;
+        this.isFavorited = isFavorited;
+    }
 
     public Drink(long id, String name, String description, String image,
                  String category, String ingredients, boolean isFavorited) {

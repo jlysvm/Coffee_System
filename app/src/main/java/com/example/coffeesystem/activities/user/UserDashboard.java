@@ -1,4 +1,4 @@
-package com.example.coffeesystem.activities.dashboard;
+package com.example.coffeesystem.activities.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
-import com.example.coffeesystem.activities.drinks.BrowseDrinks;
-import com.example.coffeesystem.activities.drinks.FavoriteDrinks;
 import com.example.coffeesystem.activities.profile.ProfileSetting;
+import com.example.coffeesystem.repository.UserManager;
 
 public class UserDashboard extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class UserDashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-        if ("GUEST".equalsIgnoreCase(LoginActivity.getAuthenticatedUser().getRole())) {
+        if ("GUEST".equalsIgnoreCase(UserManager.getInstance().getUser().getRole())) {
             myFavoritesBtn.setVisibility(View.GONE);
         }
         else {
@@ -55,6 +54,6 @@ public class UserDashboard extends AppCompatActivity {
         }
 
         TextView username = findViewById(R.id.textView2);
-        username.setText(LoginActivity.getAuthenticatedUser().getUsername());
+        username.setText(UserManager.getInstance().getUser().getUsername());
     }
 }

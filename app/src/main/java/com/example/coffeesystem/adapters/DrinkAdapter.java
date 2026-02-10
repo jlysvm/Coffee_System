@@ -26,6 +26,7 @@ import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.DrinkRepository;
 import com.example.coffeesystem.repository.FavoriteRepository;
+import com.example.coffeesystem.repository.UserManager;
 
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             drinkDescription.setText(currentDrink.getDescription());
             drinkIngredients.setText(currentDrink.getIngredients());
 
-            if ("GUEST".equalsIgnoreCase(LoginActivity.getAuthenticatedUser().getRole()))
+            if ("GUEST".equalsIgnoreCase(UserManager.getInstance().getUser().getRole()))
                 favoriteButton.setVisibility(View.INVISIBLE);
             else
                 updateFavoriteButton(favoriteButton, currentDrink);
@@ -101,7 +102,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             favoriteButton.setText(removeTxt);
             favoriteButton.setOnClickListener(v -> {
                 favoriteRepository.removeFavoriteDrink(
-                    LoginActivity.getAuthenticatedUser().getId(),
+                    UserManager.getInstance().getUser().getId(),
                     currentDrink.getId(),
                     new RequestCallback() {
                         @Override
@@ -121,7 +122,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             favoriteButton.setText(addTxt);
             favoriteButton.setOnClickListener(v -> {
                 favoriteRepository.addFavoriteDrink(
-                    LoginActivity.getAuthenticatedUser().getId(),
+                    UserManager.getInstance().getUser().getId(),
                     currentDrink.getId(),
                     new RequestCallback() {
                         @Override

@@ -1,16 +1,20 @@
-package com.example.coffeesystem.activities.dashboard;
+package com.example.coffeesystem.activities.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
+import com.example.coffeesystem.activities.profile.ProfileSetting;
+import com.example.coffeesystem.repository.UserManager;
 
 public class AdminDashboard extends AppCompatActivity {
 
@@ -25,7 +29,21 @@ public class AdminDashboard extends AppCompatActivity {
             return insets;
         });
 
-        TextView username = findViewById(R.id.textView2);
-        username.setText(LoginActivity.getAuthenticatedUser().getUsername());
+        TextView usernameView = findViewById(R.id.textView2);
+
+        String username = UserManager.getInstance().getUser().getUsername();
+        usernameView.setText(username);
+
+        AppCompatButton btnMyProfile = findViewById(R.id.btnMyProfile);
+        btnMyProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboard.this, ProfileSetting.class);
+            startActivity(intent);
+        });
+
+        AppCompatButton btnViewDrinks = findViewById(R.id.btnViewDrinks);
+        btnViewDrinks.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboard.this, AdminViewDrinks.class);
+            startActivity(intent);
+        });
     }
 }

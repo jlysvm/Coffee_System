@@ -11,16 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeSystem">
         <activity
-            android:name=".activities.dashboard.AdminDashboard"
+            android:name=".activities.admin.AdminDashboard"
             android:exported="false" />
         <activity
-            android:name=".activities.dashboard.UserDashboard"
+            android:name=".activities.admin.AdminViewDrinks"
             android:exported="false" />
         <activity
-            android:name=".activities.drinks.BrowseDrinks"
+            android:name=".activities.admin.AdminCreateDrink"
             android:exported="false" />
         <activity
-            android:name=".activities.drinks.FavoriteDrinks"
+            android:name=".activities.user.UserDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.BrowseDrinks"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.FavoriteDrinks"
             android:exported="false" />
         <activity
             android:name=".activities.profile.ProfileSetting"

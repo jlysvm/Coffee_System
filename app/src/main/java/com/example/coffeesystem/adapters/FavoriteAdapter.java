@@ -26,6 +26,7 @@ import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.FavoriteRepository;
+import com.example.coffeesystem.repository.UserManager;
 
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                 .setMessage("Are you sure you want to remove this drink from your favorites?")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     favoriteRepository.removeFavoriteDrink(
-                        LoginActivity.getAuthenticatedUser().getId(),
+                        UserManager.getInstance().getUser().getId(),
                         currentDrink.getId(),
 
                         new RequestCallback() {

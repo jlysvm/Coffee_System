@@ -1,20 +1,24 @@
 package com.example.coffeesystem.repository;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.callbacks.FetchCallback;
+import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,7 +32,7 @@ public class DrinkRepository {
     public void getAllDrinks(FetchCallback<List<Drink>> callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String json = "{\"p_userid\":"+LoginActivity.getAuthenticatedUser().getId()+"}";
+        String json = "{\"p_userid\":"+UserManager.getInstance().getUser().getId()+"}";
         RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
 
         Request request = new Request.Builder()
@@ -78,28 +82,130 @@ public class DrinkRepository {
         }).start();
     }
 
-    public void getDrinkImage(String fileName, FetchCallback<Bitmap> callback) {
+    public void createDrink(Drink drink, RequestCallback callback) {
         new Thread(() -> {
             OkHttpClient client = new OkHttpClient();
-            String url = supabaseUrl + "/storage/v1/object/drink_images/" + fileName;
+
+            String json = "{"
+                            + "\"p_name\": \"" + drink.getName() + "\","
+                            + "\"p_description\": \"" + drink.getDescription() + "\","
+                            + "\"p_image\": \"" + drink.getImage() + "\","
+                            + "\"p_category\": \"" + drink.getCategory() + "\","
+                            + "\"p_ingredients\": \"" + drink.getIngredients() + "\""
+                        + "}";
+
+            RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(supabaseUrl + "/rest/v1/rpc/add_new_drink")
+                    .post(body)
                     .addHeader("apikey", supabaseKey)
                     .addHeader("Authorization", "Bearer " + supabaseKey)
+                    .addHeader("Content-Type", "application/json")
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
-
-                if (response.isSuccessful()) {
-                    byte[] imageBytes = response.body().bytes();
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    callback.onSuccess(bitmap);
-                }
-                else if (response.code() == 404) callback.onNotFound();
+                if (response.isSuccessful()) callback.onSuccess();
                 else callback.onError(response.code());
+            }
+            catch (Exception e) {
+                callback.onNetworkError(e);
+            }
+        }).start();
+    }
 
-            } catch (Exception e) {
+    public void updateDrink(Drink drink, RequestCallback callback) {
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+
+            String json = "{"
+                            + "\"p_id\": " + drink.getId() + ","
+                            + "\"p_name\": \"" + drink.getName() + "\","
+                            + "\"p_description\": \"" + drink.getDescription() + "\","
+                            + "\"p_category\": \"" + drink.getCategory() + "\","
+                            + "\"p_ingredients\": \"" + drink.getIngredients() + "\""
+                        + "}";
+
+            RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
+
+            Request request = new Request.Builder()
+                    .url(supabaseUrl + "/rest/v1/rpc/update_drink")
+                    .post(body)
+                    .addHeader("apikey", supabaseKey)
+                    .addHeader("Authorization", "Bearer " + supabaseKey)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) callback.onSuccess();
+                else callback.onError(response.code());
+            }
+            catch (Exception e) {
+                callback.onNetworkError(e);
+            }
+        }).start();
+    }
+
+
+    public void deleteDrink(long id, RequestCallback callback) {
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+
+            HttpUrl url = HttpUrl.parse(supabaseUrl + "/rest/v1/drinks")
+                    .newBuilder()
+                    .addQueryParameter("id", "eq." + id)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .delete()
+                    .addHeader("apikey", supabaseKey)
+                    .addHeader("Authorization", "Bearer " + supabaseKey)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful()) callback.onSuccess();
+                else callback.onError(response.code());
+            }
+            catch (Exception e) {
+                callback.onNetworkError(e);
+            }
+        }).start();
+    }
+
+    public void uploadDrinkImage(Context context, Uri imageUri, String fileName, RequestCallback callback) {
+        new Thread(() -> {
+            try {
+                InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+                if (inputStream == null) {
+                    callback.onNetworkError(new IOException("Unable to open image stream"));
+                    return;
+                }
+
+                byte[] imageBytes = new byte[inputStream.available()];
+                inputStream.read(imageBytes);
+                inputStream.close();
+
+                OkHttpClient client = new OkHttpClient();
+
+                String bucketUrl = supabaseUrl+"/storage/v1/object/drink_images/"+fileName;
+
+                RequestBody body = RequestBody.create(imageBytes, MediaType.get("image/*"));
+
+                Request request = new Request.Builder()
+                        .url(bucketUrl)
+                        .put(body)
+                        .addHeader("apikey", supabaseKey)
+                        .addHeader("Authorization", "Bearer " + supabaseKey)
+                        .build();
+
+                Response response = client.newCall(request).execute();
+
+                if (response.isSuccessful()) callback.onSuccess();
+                else callback.onError(response.code());
+            }
+            catch (Exception e) {
                 callback.onNetworkError(e);
             }
         }).start();

@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
+import com.example.coffeesystem.repository.UserManager;
 
 public class ProfileSetting extends AppCompatActivity {
     @Override
@@ -31,7 +32,7 @@ public class ProfileSetting extends AppCompatActivity {
 
         AppCompatButton logoutBtn = findViewById(R.id.btnLogout);
         logoutBtn.setOnClickListener(v -> {
-            LoginActivity.setAuthenticatedUser(null);
+            UserManager.getInstance().setUser(null);
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

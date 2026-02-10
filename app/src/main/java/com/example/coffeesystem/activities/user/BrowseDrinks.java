@@ -1,4 +1,4 @@
-package com.example.coffeesystem.activities.drinks;
+package com.example.coffeesystem.activities.user;
 
 import android.content.Intent;
 import android.os.Bundle;

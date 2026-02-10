@@ -1,5 +1,6 @@
-package com.example.coffeesystem.activities.drinks;
+package com.example.coffeesystem.activities.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,29 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
+import com.example.coffeesystem.adapters.AdminViewDrinksAdapter;
 import com.example.coffeesystem.adapters.CategoryAdapter;
-import com.example.coffeesystem.adapters.FavoriteAdapter;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
 import com.example.coffeesystem.repository.CategoryRepository;
+import com.example.coffeesystem.repository.DrinkRepository;
 import com.example.coffeesystem.repository.FavoriteRepository;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteDrinks extends AppCompatActivity {
+public class AdminViewDrinks extends AppCompatActivity {
     private List<Drink> allDrinks = null;
     private final List<Drink> displayedDrinks = new ArrayList<>();
     private String searchText = "";
     private String category = "All";
-    private FavoriteAdapter favoriteAdapter = null;
+    private AdminViewDrinksAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_favorite_drinks);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.favorite_drinks), (v, insets) -> {
+        setContentView(R.layout.activity_admin_view_drinks);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.admin_view_drinks), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -45,6 +48,12 @@ public class FavoriteDrinks extends AppCompatActivity {
 
         ImageButton backBtn = findViewById(R.id.btn_back);
         backBtn.setOnClickListener(v -> finish());
+
+        FloatingActionButton createNewDrinkBtn = findViewById(R.id.add_drink_btn);
+        createNewDrinkBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminViewDrinks.this, AdminCreateDrink.class);
+            startActivity(intent);
+        });
 
         CategoryRepository categoryRepository = new CategoryRepository();
         categoryRepository.getCategories(new FetchCallback<>() {
@@ -55,9 +64,9 @@ public class FavoriteDrinks extends AppCompatActivity {
                 runOnUiThread(() -> {
                     RecyclerView categoryContainer = findViewById(R.id.categories_container);
 
-                    CategoryAdapter categoryAdapter = new CategoryAdapter(FavoriteDrinks.this, result,category -> {
-                        if (favoriteAdapter == null || allDrinks == null) return;
-                        FavoriteDrinks.this.category = category;
+                    CategoryAdapter categoryAdapter = new CategoryAdapter(AdminViewDrinks.this, result, category -> {
+                        if (adapter == null || allDrinks == null) return;
+                        AdminViewDrinks.this.category = category;
                         updateDisplayedDrinks();
                     });
 
@@ -75,8 +84,8 @@ public class FavoriteDrinks extends AppCompatActivity {
             public void onNetworkError(Exception e) {}
         });
 
-        FavoriteRepository favoriteRepository = new FavoriteRepository();
-        favoriteRepository.getFavoriteDrinks(LoginActivity.getAuthenticatedUser().getId(), new FetchCallback<>() {
+        DrinkRepository drinkRepository = new DrinkRepository();
+        drinkRepository.getAllDrinks(new FetchCallback<>() {
             @Override
             public void onSuccess(List<Drink> result) {
                 allDrinks = result;
@@ -84,8 +93,8 @@ public class FavoriteDrinks extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     RecyclerView drinkCardContainer = findViewById(R.id.drinks_card_container);
-                    favoriteAdapter = new FavoriteAdapter(FavoriteDrinks.this, displayedDrinks, result);
-                    drinkCardContainer.setAdapter(favoriteAdapter);
+                    adapter = new AdminViewDrinksAdapter(AdminViewDrinks.this, displayedDrinks, result);
+                    drinkCardContainer.setAdapter(adapter);
                 });
             }
 
@@ -109,7 +118,7 @@ public class FavoriteDrinks extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (favoriteAdapter == null || allDrinks == null) return;
+                if (adapter == null || allDrinks == null) return;
                 searchText = s.toString();
                 updateDisplayedDrinks();
             }
@@ -141,13 +150,13 @@ public class FavoriteDrinks extends AppCompatActivity {
             else {
                 for (Drink drink : allDrinks) {
                     if (category.equalsIgnoreCase(drink.getCategory()) &&
-                            drink.getName().toLowerCase().contains(searchText.toLowerCase()))
+                        drink.getName().toLowerCase().contains(searchText.toLowerCase()))
 
                         displayedDrinks.add(drink);
                 }
             }
         }
 
-        favoriteAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }

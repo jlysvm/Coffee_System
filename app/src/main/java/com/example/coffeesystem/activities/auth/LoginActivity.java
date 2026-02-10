@@ -6,18 +6,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.coffeesystem.activities.dashboard.AdminDashboard;
-import com.example.coffeesystem.activities.dashboard.UserDashboard;
+import com.example.coffeesystem.activities.admin.AdminDashboard;
+import com.example.coffeesystem.activities.user.UserDashboard;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.databinding.ActivityLoginBinding;
 import com.example.coffeesystem.models.User;
+import com.example.coffeesystem.repository.UserManager;
 import com.example.coffeesystem.repository.UserRepository;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private static User authenticatedUser;
     private ActivityLoginBinding binding;
 
     @Override
@@ -34,12 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         binding.guestLink.setOnClickListener(v -> {
-            authenticatedUser = new User(
-                    "Guest",
-                    "No email provided",
-                    "No password provided",
-                    "GUEST"
-            );
+            UserManager.getInstance().setUser(new User(
+                "Guest",
+                "No email provided",
+                "No password provided",
+                "GUEST"
+            ));
             Toast.makeText(this, "Continuing as Guest", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(LoginActivity.this, UserDashboard.class);
@@ -64,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(User user) {
                 runOnUiThread(() -> {
                     if (BCrypt.checkpw(password, user.getPassword())) {
-                        authenticatedUser = user;
+                        UserManager.getInstance().setUser(user);
                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(
@@ -97,15 +96,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onNetworkError(Exception e) {
                 runOnUiThread(() ->
-                        Toast.makeText(LoginActivity.this, "Network error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(LoginActivity.this, "Network error", Toast.LENGTH_SHORT).show()
                 );
             }
         });
     }
-
-    public static User getAuthenticatedUser() { return authenticatedUser; }
-    public static void setAuthenticatedUser(User authenticatedUser) {
-        LoginActivity.authenticatedUser = authenticatedUser;
-    }
-
 }

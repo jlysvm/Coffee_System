@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary"
-    tools:context=".activities.dashboard.AdminDashboard"
+    tools:context=".activities.admin.AdminDashboard"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="-52dp">
 
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnViewDrink1"
+        android:id="@+id/btnViewUsers"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnRounded"
+        android:id="@+id/btnViewDrinks"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
@@ -74,7 +74,7 @@
         android:backgroundTint="@color/primary2"
         android:padding="12dp"
         android:text="View All Drinks"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

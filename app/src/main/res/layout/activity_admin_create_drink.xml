@@ -34,25 +34,45 @@
 
     <ImageView
         android:id="@+id/uploaded_image"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginVertical="20dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginVertical="14dp"
         android:background="@color/white"
         android:layout_gravity="center_horizontal"
         android:src="@android:drawable/ic_menu_gallery"
         android:scaleType="centerCrop" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/upload_file"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:paddingVertical="10dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Choose image file"
-        android:textSize="16sp"
-        android:backgroundTint="@color/primary2"
-        app:cornerRadius="16dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/etFileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Target File Name"
+            android:textColorHint="@color/neutral_hint"
+            android:background="@drawable/bg_rounded_rect"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Upload"
+            android:textSize="16sp"
+            android:backgroundTint="@color/primary2"
+            app:cornerRadius="16dp" />
+
+    </LinearLayout>
 
     <EditText android:id="@+id/etProductName"
         android:layout_width="match_parent"
@@ -63,29 +83,33 @@
         android:backgroundTint="@color/white"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="8dp" />
 
     <EditText android:id="@+id/etDescription"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:hint="Description"
         android:textColorHint="@color/neutral_hint"
         android:background="@drawable/bg_rounded_rect"
         android:backgroundTint="@color/white"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="8dp"
+        android:gravity="top"
+        android:inputType="textMultiLine" />
 
     <EditText android:id="@+id/etIngredients"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:hint="Ingredients"
         android:textColorHint="@color/neutral_hint"
         android:background="@drawable/bg_rounded_rect"
         android:backgroundTint="@color/white"
         android:layout_marginBottom="10dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="8dp"
+        android:gravity="top"
+        android:inputType="textMultiLine" />
 
     <AutoCompleteTextView
         android:id="@+id/etCatId"
@@ -97,7 +121,7 @@
         android:background="@drawable/bg_rounded_rect"
         android:backgroundTint="@color/white"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="8dp" />
 
     <Button
         android:id="@+id/btnAdd"
