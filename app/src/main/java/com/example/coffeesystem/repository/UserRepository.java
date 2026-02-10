@@ -2,6 +2,7 @@ package com.example.coffeesystem.repository;
 
 import android.util.Log;
 
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -108,6 +109,45 @@ public class UserRepository {
 
             } catch (Exception e) {
                 Log.e("Login", "Error: ", e);
+                callback.onNetworkError(e);
+            }
+        }).start();
+    }
+
+    public void updateUserField(long userId, String columnName, String newValue, RequestCallback callback) {
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+
+
+            HttpUrl url = HttpUrl.parse(supabaseUrl + "/rest/v1/accounts")
+                    .newBuilder()
+                    .addQueryParameter("id", "eq." + userId) // Filter: WHERE id = userId
+                    .build();
+
+            String json = "{\"" + columnName + "\":\"" + newValue + "\"}";
+
+            RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .patch(body)
+                    .addHeader("apikey", supabaseKey)
+                    .addHeader("Authorization", "Bearer " + supabaseKey)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response body: " + responseBody);
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    Log.e("SupabaseUpdate", "Failed: " + response.code() + " " + response.message());
+                    callback.onError(response.code());
+                }
+            } catch (Exception e) {
+                Log.e("SupabaseUpdate", "Error", e);
                 callback.onNetworkError(e);
             }
         }).start();
