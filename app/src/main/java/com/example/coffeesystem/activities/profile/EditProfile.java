@@ -43,20 +43,36 @@ public class EditProfile extends AppCompatActivity {
 
         refreshUI();
 
-        // EDIT USERNAME
-        findViewById(R.id.btnEditUsername).setOnClickListener(v ->
-                showEditDialog("Edit Username", "username", currentUser.getUsername())
-        );
+        if ("GUEST".equalsIgnoreCase(UserManager.getInstance().getUser().getRole())) {
 
-        // EDIT EMAIL
-        findViewById(R.id.btnEditEmail).setOnClickListener(v ->
-                showEditDialog("Edit Email", "email", currentUser.getEmail())
-        );
+            findViewById(R.id.btnEditUsername).setOnClickListener(v ->
+                Toast.makeText(this, "Guests cannot edit their username", Toast.LENGTH_SHORT).show()
+            );
 
-        // CHANGE PASSWORD
-        findViewById(R.id.btnChangePassword).setOnClickListener(v ->
-                showChangePasswordDialog()
-        );
+            findViewById(R.id.btnEditEmail).setOnClickListener(v ->
+                Toast.makeText(this, "Guests cannot edit their email", Toast.LENGTH_SHORT).show()
+            );
+
+            findViewById(R.id.btnChangePassword).setOnClickListener(v ->
+                Toast.makeText(this, "Guests cannot edit their password", Toast.LENGTH_SHORT).show()
+            );
+        }
+        else {
+            // EDIT USERNAME
+            findViewById(R.id.btnEditUsername).setOnClickListener(v ->
+                    showEditDialog("Edit Username", "username", currentUser.getUsername())
+            );
+
+            // EDIT EMAIL
+            findViewById(R.id.btnEditEmail).setOnClickListener(v ->
+                    showEditDialog("Edit Email", "email", currentUser.getEmail())
+            );
+
+            // CHANGE PASSWORD
+            findViewById(R.id.btnChangePassword).setOnClickListener(v ->
+                    showChangePasswordDialog()
+            );
+        }
     }
 
     private void refreshUI() {
