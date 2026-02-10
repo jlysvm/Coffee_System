@@ -137,10 +137,14 @@ public class DrinkRepository {
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
+                String responseBody = response.body().string();
+                Log.i("Supabase", "Response: " + responseBody);
+
                 if (response.isSuccessful()) callback.onSuccess();
                 else callback.onError(response.code());
             }
             catch (Exception e) {
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();

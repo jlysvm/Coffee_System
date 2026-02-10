@@ -111,17 +111,17 @@
         android:gravity="top"
         android:inputType="textMultiLine" />
 
-    <AutoCompleteTextView
-        android:id="@+id/etCatId"
+    <Spinner
+        android:id="@+id/spinner_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Category"
-        android:textColorHint="@color/neutral_hint"
-        android:inputType="none"
+        android:spinnerMode="dropdown"
         android:background="@drawable/bg_rounded_rect"
         android:backgroundTint="@color/white"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp" />
+        android:paddingVertical="8dp"
+        android:popupBackground="@color/white"
+        android:gravity="center_vertical" />
 
     <Button
         android:id="@+id/btnAdd"

@@ -3,11 +3,13 @@ package com.example.coffeesystem.activities.admin;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.AutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,10 +21,15 @@ import android.os.Looper;
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
+import com.example.coffeesystem.repository.CategoryRepository;
 import com.example.coffeesystem.repository.DrinkRepository;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminCreateDrink extends AppCompatActivity {
+    private final CategoryRepository categoryRepository = new CategoryRepository();
     private final DrinkRepository drinkRepository = new DrinkRepository();
 
     private Uri selectedImageUri;
@@ -31,7 +38,7 @@ public class AdminCreateDrink extends AppCompatActivity {
     private ImageView uploadedImage;
     private MaterialButton uploadFileBtn;
     private EditText etProductName, etDescription, etIngredients, etFileName;
-    private AutoCompleteTextView etCatId;
+    private Spinner etCatId;
     private Button btnAdd;
     private ImageButton btnBack;
 
@@ -45,7 +52,6 @@ public class AdminCreateDrink extends AppCompatActivity {
         etProductName = findViewById(R.id.etProductName);
         etDescription = findViewById(R.id.etDescription);
         etIngredients = findViewById(R.id.etIngredients);
-        etCatId = findViewById(R.id.etCatId);
         etFileName = findViewById(R.id.etFileName);
         btnAdd = findViewById(R.id.btnAdd);
         btnBack = findViewById(R.id.btn_back);
@@ -71,6 +77,49 @@ public class AdminCreateDrink extends AppCompatActivity {
                     }
                 }
         );
+
+        etCatId = findViewById(R.id.spinner_category);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, R.layout.spinner_category_create_drink,
+                new ArrayList<>()
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_category_create_drink);
+        etCatId.setAdapter(adapter);
+
+        categoryRepository.getCategories(new com.example.coffeesystem.callbacks.FetchCallback<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                runOnUiThread(() -> {
+                    adapter.clear();
+                    adapter.add("Select Category");
+                    adapter.addAll(result);
+                    etCatId.setSelection(0);
+                });
+            }
+
+            @Override
+            public void onError(int code) {
+                runOnUiThread(() ->
+                    Toast.makeText(AdminCreateDrink.this, "Error fetching categories: " + code, Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onNotFound() {
+                runOnUiThread(() ->
+                    Toast.makeText(AdminCreateDrink.this, "No categories found", Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                runOnUiThread(() ->
+                    Toast.makeText(AdminCreateDrink.this, "Network error fetching categories", Toast.LENGTH_SHORT).show()
+                );
+            }
+        });
+
     }
 
     private void openImagePicker() {
@@ -83,8 +132,8 @@ public class AdminCreateDrink extends AppCompatActivity {
         String name = etProductName.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
         String ingredients = etIngredients.getText().toString().trim();
-        String category = etCatId.getText().toString().trim();
-        String fileName = etFileName.getText().toString().trim(); // get target filename
+        String category = etCatId.getSelectedItem().toString().trim();
+        String fileName = etFileName.getText().toString().trim();
 
         if (name.isEmpty()) {
             etProductName.setError("Drink name is required");
@@ -103,12 +152,8 @@ public class AdminCreateDrink extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 Drink newDrink = new Drink(
-                    name,
-                    description,
-                    fileName,
-                    category,
-                    ingredients,
-                    false
+                    name, description, fileName,
+                    category, ingredients, false
                 );
 
                 drinkRepository.createDrink(newDrink, new RequestCallback() {

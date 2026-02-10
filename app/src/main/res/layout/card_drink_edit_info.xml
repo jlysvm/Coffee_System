@@ -31,15 +31,13 @@
             android:textStyle="bold"
             android:background="@null" />
 
-        <EditText
-            android:id="@+id/drink_category"
+        <Spinner
+            android:id="@+id/drink_category_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="Category"
+            android:spinnerMode="dropdown"
             android:textAlignment="center"
-            android:textColor="@color/primary1"
-            android:textSize="16sp"
             android:background="@null" />
 
         <LinearLayout

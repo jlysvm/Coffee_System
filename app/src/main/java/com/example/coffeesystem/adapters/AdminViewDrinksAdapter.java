@@ -6,13 +6,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +30,13 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.example.coffeesystem.BuildConfig;
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
+import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.models.Drink;
+import com.example.coffeesystem.repository.CategoryRepository;
 import com.example.coffeesystem.repository.DrinkRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminViewDrinksAdapter extends RecyclerView.Adapter<AdminViewDrinksAdapter.AdminDrinksViewHolder> {
@@ -75,22 +82,70 @@ public class AdminViewDrinksAdapter extends RecyclerView.Adapter<AdminViewDrinks
 
             ImageView drinkImage = dialog.findViewById(R.id.drink_image);
             EditText drinkName = dialog.findViewById(R.id.drink_name);
-            EditText drinkCategory = dialog.findViewById(R.id.drink_category);
+            Spinner drinkCategory = dialog.findViewById(R.id.drink_category_spinner);
             EditText drinkDescription = dialog.findViewById(R.id.drink_description);
             EditText drinkIngredients = dialog.findViewById(R.id.drink_ingredients);
             Button saveButton = dialog.findViewById(R.id.save_btn);
             Button cancelButton = dialog.findViewById(R.id.cancel_btn);
 
             drinkName.setText(currentDrink.getName());
-            drinkCategory.setText(currentDrink.getCategory());
             drinkDescription.setText(currentDrink.getDescription());
             drinkIngredients.setText(currentDrink.getIngredients());
 
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    v.getContext(),
+                    R.layout.spinner_category_drink_edit_info,
+                    new ArrayList<>()
+            );
+            adapter.setDropDownViewResource(R.layout.spinner_category_drink_edit_info);
+            drinkCategory.setAdapter(adapter);
+
+            new CategoryRepository().getCategories(new FetchCallback<List<String>>() {
+                @Override
+                public void onSuccess(List<String> result) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        adapter.clear();
+                        adapter.addAll(result);
+
+                        int index = adapter.getPosition(currentDrink.getCategory());
+                        if (index >= 0) {
+                            drinkCategory.setSelection(index);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(int code) {
+                    new Handler(Looper.getMainLooper()).post(() ->
+                            Toast.makeText(v.getContext(), "Error loading categories", Toast.LENGTH_SHORT).show()
+                    );
+                }
+
+                @Override
+                public void onNotFound() {
+                    new Handler(Looper.getMainLooper()).post(() ->
+                            Toast.makeText(v.getContext(), "No categories found", Toast.LENGTH_SHORT).show()
+                    );
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    new Handler(Looper.getMainLooper()).post(() ->
+                            Toast.makeText(v.getContext(), "Network error loading categories", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            });
+
             saveButton.setOnClickListener(v1 -> {
                 String updatedName = drinkName.getText().toString().trim();
-                String updatedCategory = drinkCategory.getText().toString().trim();
+                String updatedCategory = drinkCategory.getSelectedItem().toString();
                 String updatedDescription = drinkDescription.getText().toString().trim();
                 String updatedIngredients = drinkIngredients.getText().toString().trim();
+
+                if (updatedCategory.equals("Select Category")) {
+                    Toast.makeText(v1.getContext(), "Please select a category", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 currentDrink.setName(updatedName);
                 currentDrink.setCategory(updatedCategory);
@@ -100,7 +155,7 @@ public class AdminViewDrinksAdapter extends RecyclerView.Adapter<AdminViewDrinks
                 drinkRepository.updateDrink(currentDrink, new RequestCallback() {
                     @Override
                     public void onSuccess() {
-                        ((Activity) v1.getContext()).runOnUiThread(() -> {
+                        new Handler(Looper.getMainLooper()).post(() -> {
                             notifyItemChanged(holder.getBindingAdapterPosition());
                             Toast.makeText(v1.getContext(), "Drink updated successfully", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
@@ -109,14 +164,14 @@ public class AdminViewDrinksAdapter extends RecyclerView.Adapter<AdminViewDrinks
 
                     @Override
                     public void onError(int code) {
-                        ((Activity) v1.getContext()).runOnUiThread(() ->
-                            Toast.makeText(v1.getContext(), "Error updating drink: " + code, Toast.LENGTH_SHORT).show()
+                        new Handler(Looper.getMainLooper()).post(() ->
+                                Toast.makeText(v1.getContext(), "Error updating drink: " + code, Toast.LENGTH_SHORT).show()
                         );
                     }
 
                     @Override
                     public void onNetworkError(Exception e) {
-                        ((Activity) v1.getContext()).runOnUiThread(() ->
+                        new Handler(Looper.getMainLooper()).post(() ->
                                 Toast.makeText(v1.getContext(), "Network error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                         );
                     }
@@ -124,10 +179,6 @@ public class AdminViewDrinksAdapter extends RecyclerView.Adapter<AdminViewDrinks
             });
 
             cancelButton.setOnClickListener(v1 -> dialog.dismiss());
-
-            Glide.with(mContext).load(glideUrl).into(drinkImage);
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         });
 
