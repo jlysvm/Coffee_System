@@ -12,6 +12,21 @@
         android:theme="@style/Theme.CoffeeSystem">
 
         <activity
+            android:name=".activities.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"> <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.auth.LoginActivity"
+            android:exported="false" /> <activity
+        android:name=".activities.auth.SignUpActivity"
+        android:exported="false" />
+
+        <activity
             android:name=".activities.admin.AdminDashboard"
             android:exported="false" />
         <activity
@@ -41,17 +56,6 @@
             android:name=".activities.profile.ProfileSetting"
             android:exported="false" />
 
-        <activity
-            android:name=".activities.auth.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.auth.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
