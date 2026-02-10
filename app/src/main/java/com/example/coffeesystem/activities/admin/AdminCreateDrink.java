@@ -149,7 +149,7 @@ public class AdminCreateDrink extends AppCompatActivity {
             createNewDrink(name, description, fileName, category, ingredients);
         }
         else {
-            createDrinkWithNewImage(this, name, description, fileName, category, ingredients);
+            createDrinkWithNewImage(name, description, fileName, category, ingredients);
         }
     }
 
