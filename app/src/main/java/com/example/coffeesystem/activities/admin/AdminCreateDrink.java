@@ -137,47 +137,26 @@ public class AdminCreateDrink extends AppCompatActivity {
 
         if (name.isEmpty()) {
             etProductName.setError("Drink name is required");
-            return;
         }
-        if (selectedImageUri == null) {
-            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
-            return;
+        else if (selectedImageUri == null && fileName.isEmpty()) {
+            createNewDrink(name, description, "backup.png", category, ingredients);
         }
-        if (fileName.isEmpty()) {
-            etFileName.setError("File name is required");
-            return;
+        else if (fileName.isEmpty()) {
+            Toast.makeText(this, "File name field is required", Toast.LENGTH_SHORT).show();
         }
+        else if (selectedImageUri == null) {
+            createNewDrink(name, description, fileName, category, ingredients);
+        }
+        else {
+            createDrinkWithNewImage(name, description, fileName, category, ingredients);
+        }
+    }
 
+    private void createDrinkWithNewImage(String name, String description, String fileName, String category, String ingredients) {
         drinkRepository.uploadDrinkImage(this, selectedImageUri, fileName, new RequestCallback() {
             @Override
             public void onSuccess() {
-                Drink newDrink = new Drink(
-                    name, description, fileName,
-                    category, ingredients, false
-                );
-
-                drinkRepository.createDrink(newDrink, new RequestCallback() {
-                    @Override
-                    public void onSuccess() {
-                        new Handler(Looper.getMainLooper()).post(() ->
-                            Toast.makeText(AdminCreateDrink.this, "Drink created successfully!", Toast.LENGTH_SHORT).show()
-                        );
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                        new Handler(Looper.getMainLooper()).post(() ->
-                            Toast.makeText(AdminCreateDrink.this, "Error creating drink: " + code, Toast.LENGTH_SHORT).show()
-                        );
-                    }
-
-                    @Override
-                    public void onNetworkError(Exception e) {
-                        new Handler(Looper.getMainLooper()).post(() ->
-                            Toast.makeText(AdminCreateDrink.this, "Network error creating drink", Toast.LENGTH_SHORT).show()
-                        );
-                    }
-                });
+                createNewDrink(name, description, fileName, category, ingredients);
             }
 
             @Override
@@ -191,6 +170,36 @@ public class AdminCreateDrink extends AppCompatActivity {
             public void onNetworkError(Exception e) {
                 new Handler(Looper.getMainLooper()).post(() ->
                     Toast.makeText(AdminCreateDrink.this, "Network error uploading image", Toast.LENGTH_SHORT).show()
+                );
+            }
+        });
+    }
+
+    private void createNewDrink(String name, String description, String fileName, String category, String ingredients) {
+        Drink newDrink = new Drink(
+            name, description, fileName,
+            category, ingredients, false
+        );
+
+        drinkRepository.createDrink(newDrink, new RequestCallback() {
+            @Override
+            public void onSuccess() {
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(AdminCreateDrink.this, "Drink created successfully!", Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onError(int code) {
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(AdminCreateDrink.this, "Error creating drink: " + code, Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(AdminCreateDrink.this, "Network error creating drink", Toast.LENGTH_SHORT).show()
                 );
             }
         });
