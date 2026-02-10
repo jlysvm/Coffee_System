@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.coffeesystem.BuildConfig;
+import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.Drink;
 
@@ -27,11 +28,11 @@ public class DrinkRepository {
     public void getAllDrinks(FetchCallback<List<Drink>> callback) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = supabaseUrl+"/rest/v1/rpc/get_all_drinks";
-        RequestBody body = RequestBody.create("{}", MediaType.parse("application/json"));
+        String json = "{\"p_userid\":"+LoginActivity.getAuthenticatedUser().getId()+"}";
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
 
         Request request = new Request.Builder()
-                .url(url)
+                .url(supabaseUrl+"/rest/v1/rpc/get_all_drinks")
                 .post(body)
                 .addHeader("apikey", supabaseKey)
                 .addHeader("Authorization", "Bearer " + supabaseKey)
@@ -58,18 +59,20 @@ public class DrinkRepository {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject obj = jsonArray.getJSONObject(i);
                     drinks.add(new Drink(
+                        obj.getLong("id"),
                         obj.getString("name"),
                         obj.getString("description"),
                         obj.getString("image"),
                         obj.getString("category"),
-                        obj.getString("ingredients")
+                        obj.getString("ingredients"),
+                        obj.getBoolean("is_favorited")
                     ));
                 }
 
                 callback.onSuccess(drinks);
 
             } catch (Exception e) {
-                Log.e("Login", "Error: ", e);
+                Log.e("Supabase", "Error: ", e);
                 callback.onNetworkError(e);
             }
         }).start();

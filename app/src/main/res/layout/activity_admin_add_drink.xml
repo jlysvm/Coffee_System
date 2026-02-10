@@ -39,6 +39,7 @@
         android:layout_marginVertical="20dp"
         android:background="@color/white"
         android:layout_gravity="center_horizontal"
+        android:src="@android:drawable/ic_menu_gallery"
         android:scaleType="centerCrop" />
 
     <com.google.android.material.button.MaterialButton

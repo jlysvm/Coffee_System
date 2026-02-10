@@ -1,4 +1,4 @@
-package com.example.coffeesystem.activities.browse;
+package com.example.coffeesystem.activities.drinks;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
@@ -55,9 +54,6 @@ public class BrowseDrinks extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     RecyclerView categoryContainer = findViewById(R.id.categories_container);
-                    categoryContainer.setLayoutManager(
-                        new LinearLayoutManager(BrowseDrinks.this, LinearLayoutManager.HORIZONTAL, false)
-                    );
 
                     CategoryAdapter categoryAdapter = new CategoryAdapter(BrowseDrinks.this, result,category -> {
                         if (drinkAdapter == null || allDrinks == null) return;
@@ -70,19 +66,13 @@ public class BrowseDrinks extends AppCompatActivity {
             }
 
             @Override
-            public void onNotFound() {
-
-            }
+            public void onNotFound() {}
 
             @Override
-            public void onError(int code) {
-
-            }
+            public void onError(int code) {}
 
             @Override
-            public void onNetworkError(Exception e) {
-
-            }
+            public void onNetworkError(Exception e) {}
         });
 
         DrinkRepository drinkRepository = new DrinkRepository();
@@ -104,30 +94,22 @@ public class BrowseDrinks extends AppCompatActivity {
             }
 
             @Override
-            public void onNotFound() {
-
-            }
+            public void onNotFound() {}
 
             @Override
-            public void onError(int code) {
-
-            }
+            public void onError(int code) {}
 
             @Override
-            public void onNetworkError(Exception e) {
-
-            }
+            public void onNetworkError(Exception e) {}
         });
 
         EditText searchBar = findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {

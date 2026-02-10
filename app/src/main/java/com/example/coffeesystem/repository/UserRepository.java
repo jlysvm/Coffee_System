@@ -9,7 +9,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.example.coffeesystem.BuildConfig;
-import com.example.coffeesystem.callbacks.InsertCallback;
+import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.callbacks.FetchCallback;
 import com.example.coffeesystem.models.User;
 
@@ -20,7 +20,7 @@ public class UserRepository {
     private static final String supabaseUrl = BuildConfig.SUPABASE_URL;
     private static final String supabaseKey = BuildConfig.SUPABASE_KEY;
 
-    public void insertUser(User user, InsertCallback callback) {
+    public void insertUser(User user, RequestCallback callback) {
         OkHttpClient client = new OkHttpClient();
 
         String url = supabaseUrl + "/rest/v1/rpc/insert_user";
@@ -97,6 +97,7 @@ public class UserRepository {
                 JSONObject json = new JSONArray(responseBody).getJSONObject(0);
 
                 User user = new User(
+                    json.getLong("id"),
                     json.getString("username"),
                     json.getString("email"),
                     json.getString("password"),

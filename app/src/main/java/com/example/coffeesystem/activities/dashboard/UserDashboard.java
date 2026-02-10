@@ -2,6 +2,7 @@ package com.example.coffeesystem.activities.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,7 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
-import com.example.coffeesystem.activities.browse.BrowseDrinks;
+import com.example.coffeesystem.activities.drinks.BrowseDrinks;
+import com.example.coffeesystem.activities.drinks.FavoriteDrinks;
 
 public class UserDashboard extends AppCompatActivity {
 
@@ -29,11 +31,22 @@ public class UserDashboard extends AppCompatActivity {
         });
 
         AppCompatButton browseDrinksBtn = findViewById(R.id.btnRounded);
+        AppCompatButton myFavoritesBtn = findViewById(R.id.btnViewDrink1);
 
         browseDrinksBtn.setOnClickListener(v -> {
             Intent intent = new Intent(UserDashboard.this, BrowseDrinks.class);
             startActivity(intent);
         });
+
+        if ("GUEST".equalsIgnoreCase(LoginActivity.getAuthenticatedUser().getRole())) {
+            myFavoritesBtn.setVisibility(View.GONE);
+        }
+        else {
+            myFavoritesBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(UserDashboard.this, FavoriteDrinks.class);
+                startActivity(intent);
+            });
+        }
 
         TextView username = findViewById(R.id.textView2);
         username.setText(LoginActivity.getAuthenticatedUser().getUsername());

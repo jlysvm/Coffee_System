@@ -17,7 +17,10 @@
             android:name=".activities.dashboard.UserDashboard"
             android:exported="false" />
         <activity
-            android:name=".activities.browse.BrowseDrinks"
+            android:name=".activities.drinks.BrowseDrinks"
+            android:exported="false" />
+        <activity
+            android:name=".activities.drinks.FavoriteDrinks"
             android:exported="false" />
         <activity
             android:name=".activities.auth.SignUpActivity"

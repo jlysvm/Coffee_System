@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.coffeesystem.callbacks.InsertCallback;
+import com.example.coffeesystem.callbacks.RequestCallback;
 import com.example.coffeesystem.databinding.ActivitySignupBinding;
 import com.example.coffeesystem.models.User;
 import com.example.coffeesystem.repository.UserRepository;
@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         User newUser = new User(username, email, hashedPassword, "USER");
         UserRepository repository = new UserRepository();
 
-        repository.insertUser(newUser, new InsertCallback() {
+        repository.insertUser(newUser, new RequestCallback() {
             @Override
             public void onSuccess() {
                 runOnUiThread(() -> {
