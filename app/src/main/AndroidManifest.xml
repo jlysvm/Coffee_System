@@ -23,6 +23,9 @@
             android:name=".activities.drinks.FavoriteDrinks"
             android:exported="false" />
         <activity
+            android:name=".activities.profile.ProfileSetting"
+            android:exported="false" />
+        <activity
             android:name=".activities.auth.SignUpActivity"
             android:exported="false" />
         <activity

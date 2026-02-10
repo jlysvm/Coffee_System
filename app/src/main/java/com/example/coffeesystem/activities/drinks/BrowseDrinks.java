@@ -1,5 +1,6 @@
 package com.example.coffeesystem.activities.drinks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeesystem.R;
+import com.example.coffeesystem.activities.profile.ProfileSetting;
 import com.example.coffeesystem.adapters.CategoryAdapter;
 import com.example.coffeesystem.adapters.DrinkAdapter;
 import com.example.coffeesystem.callbacks.FetchCallback;
@@ -45,6 +47,12 @@ public class BrowseDrinks extends AppCompatActivity {
 
         ImageButton backBtn = findViewById(R.id.btn_back);
         backBtn.setOnClickListener(v -> finish());
+
+        ImageButton profileBtn = findViewById(R.id.btn_profile);
+        profileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(BrowseDrinks.this, ProfileSetting.class);
+            startActivity(intent);
+        });
 
         CategoryRepository categoryRepository = new CategoryRepository();
         categoryRepository.getCategories(new FetchCallback<>() {

@@ -104,4 +104,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static User getAuthenticatedUser() { return authenticatedUser; }
+    public static void setAuthenticatedUser(User authenticatedUser) {
+        LoginActivity.authenticatedUser = authenticatedUser;
+    }
+
 }

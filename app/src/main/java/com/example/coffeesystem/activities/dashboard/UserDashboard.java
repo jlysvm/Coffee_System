@@ -16,6 +16,7 @@ import com.example.coffeesystem.R;
 import com.example.coffeesystem.activities.auth.LoginActivity;
 import com.example.coffeesystem.activities.drinks.BrowseDrinks;
 import com.example.coffeesystem.activities.drinks.FavoriteDrinks;
+import com.example.coffeesystem.activities.profile.ProfileSetting;
 
 public class UserDashboard extends AppCompatActivity {
 
@@ -30,9 +31,14 @@ public class UserDashboard extends AppCompatActivity {
             return insets;
         });
 
+        AppCompatButton profileBtn = findViewById(R.id.btnMyProfile);
         AppCompatButton browseDrinksBtn = findViewById(R.id.btnRounded);
         AppCompatButton myFavoritesBtn = findViewById(R.id.btnViewDrink1);
 
+        profileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(UserDashboard.this, ProfileSetting.class);
+            startActivity(intent);
+        });
         browseDrinksBtn.setOnClickListener(v -> {
             Intent intent = new Intent(UserDashboard.this, BrowseDrinks.class);
             startActivity(intent);
