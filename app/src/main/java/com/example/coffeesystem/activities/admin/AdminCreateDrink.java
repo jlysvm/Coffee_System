@@ -1,5 +1,6 @@
 package com.example.coffeesystem.activities.admin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -148,7 +149,7 @@ public class AdminCreateDrink extends AppCompatActivity {
             createNewDrink(name, description, fileName, category, ingredients);
         }
         else {
-            createDrinkWithNewImage(name, description, fileName, category, ingredients);
+            createDrinkWithNewImage(this, name, description, fileName, category, ingredients);
         }
     }
 
@@ -157,6 +158,7 @@ public class AdminCreateDrink extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 createNewDrink(name, description, fileName, category, ingredients);
+                AdminCreateDrink.this.finish();
             }
 
             @Override
