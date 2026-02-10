@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoffeeSystem">
+
         <activity
             android:name=".activities.admin.AdminDashboard"
             android:exported="false" />
@@ -19,6 +20,7 @@
         <activity
             android:name=".activities.admin.AdminCreateDrink"
             android:exported="false" />
+
         <activity
             android:name=".activities.user.UserDashboard"
             android:exported="false" />
@@ -28,9 +30,17 @@
         <activity
             android:name=".activities.user.FavoriteDrinks"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.profile.EditProfile"
+            android:exported="false" />
+        <activity
+            android:name=".activities.profile.AccountOverview"
+            android:exported="false" />
         <activity
             android:name=".activities.profile.ProfileSetting"
             android:exported="false" />
+
         <activity
             android:name=".activities.auth.SignUpActivity"
             android:exported="false" />
